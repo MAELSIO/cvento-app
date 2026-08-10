@@ -17,7 +17,7 @@ export default async function HomePage() {
         </div>
       )}
       <header className="mx-auto flex max-w-5xl items-center justify-between px-6 py-6">
-        <a href="/" className="flex items-center gap-2 font-display text-lg font-bold">
+        <a href="/" className="flex items-center gap-2.5 font-display text-lg font-bold">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-white">
             C
           </span>

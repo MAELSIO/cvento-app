@@ -34,7 +34,7 @@ export default async function DashboardLayout({
     <div className="min-h-screen">
       <header className="border-b border-line bg-surface">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-6 py-4">
-          <a href="/dashboard" className="flex items-center gap-2 font-display text-lg font-bold">
+          <a href="/dashboard" className="flex items-center gap-2.5 font-display text-lg font-bold">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-white">
               C
             </span>

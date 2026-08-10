@@ -45,7 +45,7 @@ export default function DiagnosticPage() {
 
   return (
     <main className="mx-auto max-w-2xl px-6 py-16">
-      <a href="/" className="mb-8 inline-flex items-center gap-2 font-display text-lg font-bold">
+      <a href="/" className="mb-8 inline-flex items-center gap-2.5 font-display text-lg font-bold">
         <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-white">
           C
         </span>

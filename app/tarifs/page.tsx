@@ -13,7 +13,7 @@ export default async function TarifsPage() {
   return (
     <main className="mx-auto max-w-5xl px-6 py-16">
       <div className="mb-10 text-center">
-        <a href="/" className="mb-6 inline-flex items-center gap-2 font-display text-lg font-bold">
+        <a href="/" className="mb-6 inline-flex items-center gap-2.5 font-display text-lg font-bold">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-white">
             C
           </span>
