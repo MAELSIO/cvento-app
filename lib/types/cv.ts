@@ -49,3 +49,16 @@ export const EMPTY_CV_CONTENT: CvContent = {
   competences: [],
   langues: [],
 };
+
+/** Aplatit le contenu structuré du CV en texte brut (recherche de mots-clés, prompt IA). */
+export function cvContentToText(content: CvContent): string {
+  const parts = [
+    content.identite.titre,
+    content.resume,
+    ...content.experiences.flatMap((e) => [e.poste, e.entreprise, ...e.bullets]),
+    ...content.formations.map((f) => `${f.diplome} ${f.etablissement}`),
+    content.competences.join(" "),
+    content.langues.map((l) => l.langue).join(" "),
+  ];
+  return parts.filter(Boolean).join("\n");
+}

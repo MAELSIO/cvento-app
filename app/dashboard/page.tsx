@@ -1,12 +1,20 @@
 import { createClient } from "@/lib/supabase/server";
 import { hasProAccess, FREE_PLAN_MAX_CVS } from "@/lib/plan";
 import { createCv, deleteCv } from "@/lib/actions/cvs";
+import { redeemReferral } from "@/lib/actions/referrals";
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ ref?: string; checkout?: string }>;
+}) {
+  const { ref, checkout } = await searchParams;
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  if (ref) await redeemReferral(ref);
 
   const { data: subscription } = await supabase
     .from("subscriptions")
@@ -25,6 +33,16 @@ export default async function DashboardPage() {
 
   return (
     <div>
+      {ref && (
+        <p className="mb-6 rounded-[var(--radius-sm)] bg-primary-tint p-3 text-sm font-semibold text-primary-dark">
+          Bienvenue ! Votre bonus de parrainage (générations IA en plus) a été appliqué.
+        </p>
+      )}
+      {checkout === "success" && (
+        <p className="mb-6 rounded-[var(--radius-sm)] bg-primary-tint p-3 text-sm font-semibold text-primary-dark">
+          Paiement confirmé, bienvenue dans CVento Pro !
+        </p>
+      )}
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">Mes CV</h1>

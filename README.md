@@ -2,13 +2,15 @@
 
 Générateur de CV et lettre de motivation assisté par IA pour le marché français. Plan gratuit limité + plan payant (mensuel / annuel / à vie).
 
-**État actuel : Phase 1 (auth + facturation) et un premier morceau de Phase 2 (éditeur de CV, 1 template, export PDF) sont codés.** Reste à connecter l'IA (rédaction, mots-clés, score détaillé, lettre de motivation, entretien), l'export DOCX, les pages SEO publiques (`/exemples-cv/[metier]`), le blog, et les fonctionnalités de croissance (parrainage, relances email, offre de lancement, parcours de rétention).
+**État actuel : le cahier des charges est codé de bout en bout** — auth, facturation (mensuel/annuel/à vie), éditeur de CV (1 template ATS-safe), IA (rédaction, ciblage mots-clés, score détaillé, lettre de motivation, entretien), export PDF/DOCX, diagnostic gratuit sans inscription, pages SEO `/exemples-cv/[metier]`, blog, parrainage, relances email, offre de lancement activable, parcours de rétention à l'annulation.
 
-**Tout ce code est écrit et compile, mais n'a pas encore tourné contre de vrais comptes Supabase/Stripe/Anthropic** — voir "Mise en route" ci-dessous.
+**Tout ce code est écrit, compile (`npm run build` propre) et a été testé en local avec des clés factices — mais n'a jamais tourné contre de vrais comptes Supabase/Stripe/Anthropic/Resend.** Voir "Mise en route" ci-dessous ; c'est la seule chose qui reste à faire pour un lancement réel.
+
+Reste hors code, volontairement non couvert par un MVP : plus de templates (15-20 visés, 1 aujourd'hui : "sobre"), bibliothèque de centaines d'exemples de CV (20 métiers de départ aujourd'hui, structure extensible sans changement de code), extension de navigateur, génération de types TypeScript depuis le schéma Supabase réel.
 
 ## Stack
 
-Next.js 16 (App Router, TypeScript) · Supabase (Postgres + Auth email/mot de passe + Google OAuth) · Stripe (Checkout mensuel/annuel + paiement unique) · Anthropic (Claude, génération IA — pas encore branché) · `@react-pdf/renderer` (export PDF) · `docx` (export Word — pas encore branché) · Resend (email) · Vercel · Tailwind CSS v4.
+Next.js 16 (App Router, TypeScript) · Supabase (Postgres + Auth email/mot de passe + Google OAuth) · Stripe (Checkout mensuel/annuel + paiement unique) · Anthropic Claude (rédaction, ciblage mots-clés, score, lettre de motivation, entretien) · `@react-pdf/renderer` + `docx` (export PDF/Word) · `pdf-parse` + `mammoth` (diagnostic gratuit) · Resend (email) · Vercel · Tailwind CSS v4.
 
 > **Next.js 16 a des changements de rupture** par rapport aux versions précédentes : le middleware s'appelle maintenant `proxy.ts` (voir `proxy.ts` à la racine), et `cookies()`/`params` sont asynchrones. Avant de modifier ce projet, lisez `AGENTS.md` et `node_modules/next/dist/docs/`.
 
@@ -31,7 +33,7 @@ Aucun de ces comptes ne peut être créé à votre place :
 
 ### 2. Configurer la base de données
 
-Dans le SQL Editor de votre projet Supabase, exécutez `supabase/migrations/0001_init.sql`.
+Dans le SQL Editor de votre projet Supabase, exécutez **dans l'ordre** `supabase/migrations/0001_init.sql` puis `0002_growth.sql`.
 
 ### 3. Configurer l'auth dans Supabase
 
@@ -63,29 +65,42 @@ Copiez le `whsec_...` affiché dans `STRIPE_WEBHOOK_SECRET`, puis redémarrez `n
 
 ### 7. Parcours de test complet (avant toute mise en ligne)
 
+**Auth et CV**
 1. Inscription email/mot de passe → vérifier l'email de confirmation → connexion.
 2. Inscription/connexion via Google.
-3. `/dashboard` → "Créer un CV" → remplir l'éditeur → "Enregistrer" → "Télécharger PDF" → vérifier le PDF (mention "Créé avec CVento" attendue en plan gratuit).
-4. Créer un 2ᵉ CV en plan gratuit → doit rediriger vers `/tarifs?limite=cv`.
-5. `/tarifs` → tester les 3 boutons (mensuel, annuel, à vie) avec la carte de test `4242 4242 4242 4242`.
-6. Vérifier dans Supabase (table `subscriptions`) que `status`/`is_lifetime` se met à jour selon le plan choisi.
-7. Repasser en plan gratuit (annuler l'abonnement test) et vérifier que la limite de CV et le filigrane PDF reviennent.
+3. `/dashboard` → "Créer un CV" → remplir l'éditeur → "✨ Générer avec l'IA" sur une expérience → "Enregistrer" → "Télécharger PDF" (mention "Créé avec CVento" attendue en plan gratuit) — "Word (Pro)" doit rester grisé en plan gratuit.
+4. Coller une offre d'emploi dans "Poste visé" → "✨ Analyser les mots-clés" → vérifier les badges trouvés/manquants.
+5. Vérifier le score de compatibilité : détail complet visible seulement en Pro, teaser (3 critères) en gratuit.
+6. Créer un 2ᵉ CV en plan gratuit → doit rediriger vers `/tarifs?limite=cv`.
+7. Dépasser 5 générations IA dans la journée en plan gratuit → message de quota atteint.
+
+**Lettre de motivation et entretien**
+8. `/dashboard/lettres` → nouvelle lettre pour un CV → "✨ Générer avec l'IA" → vérifier la cohérence avec le CV et l'offre ciblée.
+9. `/dashboard/entretien` → générer des questions pour un CV avec poste visé → répondre → "Obtenir un feedback IA".
+
+**Facturation (3 plans)**
+10. `/tarifs` → tester les 3 boutons (mensuel, annuel, à vie) avec la carte de test `4242 4242 4242 4242`.
+11. Vérifier dans Supabase (table `subscriptions`) que `status`/`is_lifetime` se met à jour selon le plan choisi.
+12. `/dashboard/parametres` → "Résilier mon abonnement" → vérifier le parcours de rétention (pause 1 mois, puis résiliation confirmée) avant de repasser en plan gratuit.
+13. "Supprimer mon compte" → vérifier la suppression réelle dans Supabase (cascade sur toutes les tables).
+
+**Croissance**
+14. `/diagnostic` → uploader un CV PDF et un CV DOCX existants → vérifier un score cohérent sans compte.
+15. `/dashboard/parrainage` → copier le lien → ouvrir `/signup?ref=VOTRECODE` dans une fenêtre privée, créer un compte → vérifier +10 crédits IA des deux côtés (table `subscriptions.bonus_ai_credits`).
+16. Activer l'offre de lancement : `curl -X POST https://votre-domaine/api/admin/launch-offer -H "x-admin-key: VOTRE_ADMIN_KEY" -d '{"active":true,"message":"..."}'` → vérifier la bannière sur `/`.
+17. Appeler `/api/cron/relances` avec `Authorization: Bearer VOTRE_CRON_SECRET` → vérifier l'envoi (compte sans CV après 24h, compte gratuit avec CV après 3 jours) et l'absence de doublon au second appel.
 
 ### 8. Déployer sur Vercel
 
 1. Poussez ce repo sur GitHub.
-2. Sur Vercel, "Import Project" → ajoutez **toutes** les variables de `.env.local` dans Project Settings > Environment Variables.
+2. Sur Vercel, "Import Project" → ajoutez **toutes** les variables de `.env.local` dans Project Settings > Environment Variables, y compris `CRON_SECRET` et `ADMIN_KEY` (générez des chaînes aléatoires longues).
 3. Ajoutez l'URL de production aux Redirect URLs Supabase, et créez un nouvel endpoint de webhook Stripe pointant vers `https://votre-domaine/api/webhooks/stripe`.
-4. Refaites le parcours de test (étape 7) sur l'URL de production en mode Stripe **test** avant de passer en **live**.
+4. Vercel active automatiquement le cron défini dans `vercel.json` (relances email, quotidien) dès le déploiement.
+5. Refaites le parcours de test (étape 7) sur l'URL de production en mode Stripe **test** avant de passer en **live**.
 
-## Ce qui n'est pas encore fait
+## Ce qui reste volontairement hors scope
 
-- **IA** : rédaction des points d'expérience, ciblage par mots-clés, score de compatibilité détaillé (20 critères), lettre de motivation, préparation d'entretien — tout branché sur `ANTHROPIC_API_KEY` mais pas encore implémenté.
-- Export Word (DOCX) — dépendance `docx` déjà installée, pas encore câblée.
-- Templates supplémentaires (15-20 attendus, 1 seul aujourd'hui : "sobre").
-- Bibliothèque d'exemples de CV par métier.
-- Pages SEO publiques `/exemples-cv/[metier]` et blog.
-- Outil de diagnostic gratuit sans inscription (upload d'un CV existant).
-- Parrainage, relances email (compte inachevé/panier abandonné), offre de lancement activable, parcours de rétention à l'annulation.
-- Extension de navigateur (remplissage auto de candidatures).
-- Génération de types TypeScript depuis le schéma Supabase réel (`supabase gen types typescript`).
+- Plus de templates de CV (15-20 visés au cahier des charges, 1 aujourd'hui : "sobre" — architecture prête pour en ajouter dans `lib/pdf/`, `lib/docx/`, `app/dashboard/cv/[id]/cv-preview.tsx`).
+- Bibliothèque de centaines d'exemples de CV (20 métiers de départ dans `lib/data/metiers.ts`, structure réutilisable — ajouter des entrées ne demande aucun changement de code).
+- Extension de navigateur (remplissage automatique de candidatures).
+- Génération de types TypeScript depuis le schéma Supabase réel (`supabase gen types typescript`) — le code type les entités manuellement.

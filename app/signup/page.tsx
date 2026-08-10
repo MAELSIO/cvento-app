@@ -1,9 +1,16 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { Suspense, useState, type FormEvent } from "react";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
-export default function SignupPage() {
+function dashboardNext(ref: string | null): string {
+  return ref ? `/dashboard?ref=${encodeURIComponent(ref)}` : "/dashboard";
+}
+
+function SignupForm() {
+  const searchParams = useSearchParams();
+  const ref = searchParams.get("ref");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +28,7 @@ export default function SignupPage() {
       password,
       options: {
         data: { full_name: fullName },
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(dashboardNext(ref))}`,
       },
     });
 
@@ -37,7 +44,9 @@ export default function SignupPage() {
     const supabase = createClient();
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/auth/callback?next=/dashboard` },
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(dashboardNext(ref))}`,
+      },
     });
   }
 
@@ -124,5 +133,13 @@ export default function SignupPage() {
         </p>
       </div>
     </main>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense>
+      <SignupForm />
+    </Suspense>
   );
 }

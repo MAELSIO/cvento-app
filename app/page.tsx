@@ -1,6 +1,21 @@
-export default function HomePage() {
+import { createClient } from "@/lib/supabase/server";
+
+export default async function HomePage() {
+  const supabase = await createClient();
+  const { data: launchOffer } = await supabase
+    .from("app_settings")
+    .select("value")
+    .eq("key", "launch_offer")
+    .single();
+  const offer = launchOffer?.value as { active: boolean; message: string } | undefined;
+
   return (
     <main>
+      {offer?.active && offer.message && (
+        <div className="bg-gold px-6 py-2 text-center text-sm font-semibold text-white">
+          {offer.message}
+        </div>
+      )}
       <header className="mx-auto flex max-w-5xl items-center justify-between px-6 py-6">
         <a href="/" className="flex items-center gap-2 font-display text-lg font-bold">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-white">
@@ -9,6 +24,7 @@ export default function HomePage() {
           CVento
         </a>
         <nav className="flex items-center gap-4 text-sm font-semibold text-ink-soft">
+          <a href="/diagnostic" className="hover:text-primary">Diagnostic gratuit</a>
           <a href="/tarifs" className="hover:text-primary">Tarifs</a>
           <a href="/login" className="hover:text-primary">Connexion</a>
           <a

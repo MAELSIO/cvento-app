@@ -44,6 +44,7 @@ export default async function DashboardLayout({
             <a href="/dashboard" className="hover:text-primary">Mes CV</a>
             <a href="/dashboard/lettres" className="hover:text-primary">Lettres</a>
             <a href="/dashboard/entretien" className="hover:text-primary">Entretien</a>
+            <a href="/dashboard/parrainage" className="hover:text-primary">Parrainage</a>
             <a href="/dashboard/parametres" className="hover:text-primary">Paramètres</a>
             <span
               className={

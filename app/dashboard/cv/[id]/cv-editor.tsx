@@ -2,8 +2,11 @@
 
 import { useState, useTransition } from "react";
 import { saveCv } from "@/lib/actions/cvs";
-import type { CvContent, CvExperience, CvFormation, CvLangue } from "@/lib/types/cv";
+import { generateBullets, extractKeywords } from "@/lib/actions/ai";
+import { matchKeywords } from "@/lib/ai/match-keywords";
+import { cvContentToText, type CvContent, type CvExperience, type CvFormation, type CvLangue } from "@/lib/types/cv";
 import { CvPreview } from "./cv-preview";
+import { CvScore } from "./cv-score";
 
 const inputClass =
   "rounded-[var(--radius-sm)] border-2 border-line px-3 py-2 text-sm focus:border-primary focus:outline-none";
@@ -36,12 +39,14 @@ export function CvEditor({
   initialTargetJobTitle,
   initialTargetJobDescription,
   initialContent,
+  isPro,
 }: {
   cvId: string;
   initialTitle: string;
   initialTargetJobTitle: string;
   initialTargetJobDescription: string;
   initialContent: CvContent;
+  isPro: boolean;
 }) {
   const [title, setTitle] = useState(initialTitle);
   const [targetJobTitle, setTargetJobTitle] = useState(initialTargetJobTitle);
@@ -49,12 +54,51 @@ export function CvEditor({
   const [content, setContent] = useState<CvContent>(initialContent);
   const [isPending, startTransition] = useTransition();
   const [savedAt, setSavedAt] = useState<Date | null>(null);
+  const [generatingExpId, setGeneratingExpId] = useState<string | null>(null);
+  const [aiError, setAiError] = useState("");
+  const [keywordResult, setKeywordResult] = useState<{ found: string[]; missing: string[] } | null>(null);
+  const [analyzingKeywords, setAnalyzingKeywords] = useState(false);
 
   function handleSave() {
     startTransition(async () => {
       await saveCv(cvId, { title, targetJobTitle, targetJobDescription, content });
       setSavedAt(new Date());
     });
+  }
+
+  async function handleGenerateBullets(exp: CvExperience) {
+    setAiError("");
+    setGeneratingExpId(exp.id);
+    try {
+      const bullets = await generateBullets({
+        poste: exp.poste,
+        entreprise: exp.entreprise,
+        motsCles: content.competences.join(", "),
+      });
+      setContent((c) => ({
+        ...c,
+        experiences: c.experiences.map((e) =>
+          e.id === exp.id ? { ...e, bullets: [...e.bullets.filter(Boolean), ...bullets] } : e
+        ),
+      }));
+    } catch (err) {
+      setAiError(err instanceof Error ? err.message : "Erreur lors de la génération IA.");
+    } finally {
+      setGeneratingExpId(null);
+    }
+  }
+
+  async function handleAnalyzeKeywords() {
+    setAiError("");
+    setAnalyzingKeywords(true);
+    try {
+      const keywords = await extractKeywords(targetJobDescription);
+      setKeywordResult(matchKeywords(keywords, cvContentToText(content)));
+    } catch (err) {
+      setAiError(err instanceof Error ? err.message : "Erreur lors de l'analyse des mots-clés.");
+    } finally {
+      setAnalyzingKeywords(false);
+    }
   }
 
   return (
@@ -78,6 +122,22 @@ export function CvEditor({
           >
             Télécharger PDF
           </a>
+          {isPro ? (
+            <a
+              href={`/api/cv/${cvId}/docx`}
+              className="rounded-[var(--radius-sm)] border-2 border-line px-4 py-2 text-sm font-bold text-ink hover:border-primary"
+            >
+              Télécharger Word
+            </a>
+          ) : (
+            <a
+              href="/tarifs"
+              title="Export Word réservé au plan Pro"
+              className="rounded-[var(--radius-sm)] border-2 border-dashed border-line px-4 py-2 text-sm font-bold text-ink-faint"
+            >
+              Word (Pro)
+            </a>
+          )}
           <button
             type="button"
             onClick={handleSave}
@@ -88,6 +148,12 @@ export function CvEditor({
           </button>
         </div>
       </div>
+
+      {aiError && (
+        <p className="mb-4 rounded-[var(--radius-sm)] bg-warn-tint p-3 text-sm font-semibold text-warn">
+          {aiError}
+        </p>
+      )}
 
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="flex flex-col gap-6">
@@ -116,6 +182,40 @@ export function CvEditor({
                   placeholder="Collez le texte de l'offre ici"
                 />
               </div>
+              <button
+                type="button"
+                onClick={handleAnalyzeKeywords}
+                disabled={!targetJobDescription.trim() || analyzingKeywords}
+                className="self-start text-xs font-bold text-primary hover:underline disabled:opacity-50"
+              >
+                {analyzingKeywords ? "Analyse..." : "✨ Analyser les mots-clés"}
+              </button>
+              {keywordResult && (
+                <div className="rounded-[var(--radius-sm)] bg-surface-alt p-3">
+                  <p className="mb-2 text-xs font-semibold text-ink-soft">
+                    {keywordResult.found.length} mot(s)-clé(s) trouvé(s) sur{" "}
+                    {keywordResult.found.length + keywordResult.missing.length}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {keywordResult.found.map((kw) => (
+                      <span
+                        key={kw}
+                        className="rounded-full bg-primary-tint px-2 py-1 text-xs font-semibold text-primary-dark"
+                      >
+                        ✓ {kw}
+                      </span>
+                    ))}
+                    {keywordResult.missing.map((kw) => (
+                      <span
+                        key={kw}
+                        className="rounded-full bg-warn-tint px-2 py-1 text-xs font-semibold text-warn"
+                      >
+                        ✕ {kw}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </section>
 
@@ -284,7 +384,17 @@ export function CvEditor({
                     Poste actuel
                   </label>
                   <div className="mt-2 flex flex-col gap-1">
-                    <label className={labelClass}>Points clés (un par ligne)</label>
+                    <div className="flex items-center justify-between">
+                      <label className={labelClass}>Points clés (un par ligne)</label>
+                      <button
+                        type="button"
+                        onClick={() => handleGenerateBullets(exp)}
+                        disabled={generatingExpId === exp.id || !exp.poste}
+                        className="text-xs font-bold text-primary hover:underline disabled:opacity-50"
+                      >
+                        {generatingExpId === exp.id ? "Génération..." : "✨ Générer avec l'IA"}
+                      </button>
+                    </div>
                     <textarea
                       value={exp.bullets.join("\n")}
                       onChange={(e) => {
@@ -473,7 +583,8 @@ export function CvEditor({
           </section>
         </div>
 
-        <div className="lg:sticky lg:top-6 lg:self-start">
+        <div className="flex flex-col gap-6 lg:sticky lg:top-6 lg:self-start">
+          <CvScore content={content} targetJobTitle={targetJobTitle} isPro={isPro} />
           <CvPreview content={content} />
         </div>
       </div>
