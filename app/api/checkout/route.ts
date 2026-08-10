@@ -37,6 +37,12 @@ export async function POST(request: NextRequest) {
   const session = await stripe.checkout.sessions.create({
     mode: plan === "lifetime" ? "payment" : "subscription",
     line_items: [{ price: priceId, quantity: 1 }],
+    // Nos produits Stripe n'ont pas de tax_code renseigné ; Managed Payments
+    // (activé par défaut sur les nouveaux comptes) exige ce code sinon la
+    // session échoue avec "the product tax code is missing". On désactive
+    // Managed Payments plutôt que de dépendre d'un tax_code correctement
+    // configuré côté Dashboard.
+    managed_payments: { enabled: false },
     customer: sub?.stripe_customer_id || undefined,
     customer_email: sub?.stripe_customer_id ? undefined : user.email,
     client_reference_id: user.id,
