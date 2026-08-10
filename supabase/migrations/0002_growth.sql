@@ -24,6 +24,10 @@ create policy "Un utilisateur lit son propre code de parrainage"
   on public.referrals for select
   using (auth.uid() = user_id);
 
+create policy "Un utilisateur cree son propre code de parrainage"
+  on public.referrals for insert
+  with check (auth.uid() = user_id);
+
 -- ---------------------------------------------------------------------
 -- referral_redemptions : une ligne par filleul qui s'est inscrit via un
 -- lien de parrainage. Un même compte ne peut être filleul qu'une fois.
