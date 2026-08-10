@@ -2,11 +2,11 @@
 
 Générateur de CV et lettre de motivation assisté par IA pour le marché français. Plan gratuit limité + plan payant (mensuel / annuel / à vie).
 
-**État actuel : le cahier des charges est codé de bout en bout** — auth, facturation (mensuel/annuel/à vie), éditeur de CV (1 template ATS-safe), IA (rédaction, ciblage mots-clés, score détaillé, lettre de motivation, entretien), export PDF/DOCX, diagnostic gratuit sans inscription, pages SEO `/exemples-cv/[metier]`, blog, parrainage, relances email, offre de lancement activable, parcours de rétention à l'annulation.
+**État actuel : le cahier des charges est codé de bout en bout** — auth, facturation (mensuel/annuel/à vie), éditeur de CV (18 templates ATS-safe), IA (rédaction, ciblage mots-clés, score détaillé, lettre de motivation, entretien), export PDF/DOCX, diagnostic gratuit sans inscription, pages SEO `/exemples-cv/[metier]` (40 métiers), blog (9 articles), parrainage, relances email, offre de lancement activable, parcours de rétention à l'annulation, et une extension de navigateur (remplissage auto de candidatures).
 
 **Tout ce code est écrit, compile (`npm run build` propre) et a été testé en local avec des clés factices — mais n'a jamais tourné contre de vrais comptes Supabase/Stripe/Anthropic/Resend.** Voir "Mise en route" ci-dessous ; c'est la seule chose qui reste à faire pour un lancement réel.
 
-Reste hors code, volontairement non couvert par un MVP : plus de templates (15-20 visés, 1 aujourd'hui : "sobre"), bibliothèque de centaines d'exemples de CV (20 métiers de départ aujourd'hui, structure extensible sans changement de code), extension de navigateur, génération de types TypeScript depuis le schéma Supabase réel.
+Reste hors code, volontairement non couvert (voir détail en fin de fichier) : génération de types TypeScript depuis le schéma Supabase réel, publication de l'extension sur le Chrome Web Store (compte développeur externe).
 
 ## Stack
 
@@ -33,7 +33,7 @@ Aucun de ces comptes ne peut être créé à votre place :
 
 ### 2. Configurer la base de données
 
-Dans le SQL Editor de votre projet Supabase, exécutez **dans l'ordre** `supabase/migrations/0001_init.sql` puis `0002_growth.sql`.
+Dans le SQL Editor de votre projet Supabase, exécutez **dans l'ordre** `supabase/migrations/0001_init.sql`, `0002_growth.sql`, puis `0003_api_tokens.sql`.
 
 ### 3. Configurer l'auth dans Supabase
 
@@ -69,6 +69,7 @@ Copiez le `whsec_...` affiché dans `STRIPE_WEBHOOK_SECRET`, puis redémarrez `n
 1. Inscription email/mot de passe → vérifier l'email de confirmation → connexion.
 2. Inscription/connexion via Google.
 3. `/dashboard` → "Créer un CV" → remplir l'éditeur → "✨ Générer avec l'IA" sur une expérience → "Enregistrer" → "Télécharger PDF" (mention "Créé avec CVento" attendue en plan gratuit) — "Word (Pro)" doit rester grisé en plan gratuit.
+3bis. "Changer de template" → vérifier que seul "Classique Gris" est cliquable en plan gratuit (17 autres verrouillés 🔒) → changer de template → vérifier que l'aperçu, le PDF et le DOCX reflètent bien le nouveau choix.
 4. Coller une offre d'emploi dans "Poste visé" → "✨ Analyser les mots-clés" → vérifier les badges trouvés/manquants.
 5. Vérifier le score de compatibilité : détail complet visible seulement en Pro, teaser (3 critères) en gratuit.
 6. Créer un 2ᵉ CV en plan gratuit → doit rediriger vers `/tarifs?limite=cv`.
@@ -90,6 +91,11 @@ Copiez le `whsec_...` affiché dans `STRIPE_WEBHOOK_SECRET`, puis redémarrez `n
 16. Activer l'offre de lancement : `curl -X POST https://votre-domaine/api/admin/launch-offer -H "x-admin-key: VOTRE_ADMIN_KEY" -d '{"active":true,"message":"..."}'` → vérifier la bannière sur `/`.
 17. Appeler `/api/cron/relances` avec `Authorization: Bearer VOTRE_CRON_SECRET` → vérifier l'envoi (compte sans CV après 24h, compte gratuit avec CV après 3 jours) et l'absence de doublon au second appel.
 
+**Extension navigateur**
+18. `/dashboard/parametres` → "Extension navigateur" → créer un jeton → copier.
+19. Charger `extension/` en mode développeur (voir `extension/README.md`) → coller le jeton dans le popup → "Se connecter" → vérifier l'affichage du profil.
+20. Sur un formulaire de candidature (ou une page de test avec des champs nom/email/téléphone), cliquer "Remplir ce formulaire" → vérifier le remplissage → révoquer le jeton depuis `/dashboard/parametres` → vérifier que l'extension affiche une erreur au prochain remplissage.
+
 ### 8. Déployer sur Vercel
 
 1. Poussez ce repo sur GitHub.
@@ -98,9 +104,16 @@ Copiez le `whsec_...` affiché dans `STRIPE_WEBHOOK_SECRET`, puis redémarrez `n
 4. Vercel active automatiquement le cron défini dans `vercel.json` (relances email, quotidien) dès le déploiement.
 5. Refaites le parcours de test (étape 7) sur l'URL de production en mode Stripe **test** avant de passer en **live**.
 
+## Templates de CV
+
+18 templates = 3 mises en page (`classique`, `moderne`, `compact`) × 6 couleurs d'accent, définis dans `lib/templates/registry.ts`. La structure (une colonne, pas d'icône, pas de tableau) ne varie jamais entre templates — seuls police/couleur/espacement changent — c'est ce qui garantit que les 18 restent compatibles ATS. `classique-gris` est le seul template du plan gratuit. Pour ajouter une 19ᵉ combinaison, il suffit d'ajouter une entrée à `TEMPLATE_LAYOUTS` ou `TEMPLATE_COLORS` — aperçu web, PDF et DOCX s'adaptent automatiquement.
+
+## Extension navigateur
+
+Dossier `extension/` (Manifest V3), non publiée sur le Chrome Web Store (compte développeur externe requis) — voir `extension/README.md` pour l'installation en mode développeur et les limites connues.
+
 ## Ce qui reste volontairement hors scope
 
-- Plus de templates de CV (15-20 visés au cahier des charges, 1 aujourd'hui : "sobre" — architecture prête pour en ajouter dans `lib/pdf/`, `lib/docx/`, `app/dashboard/cv/[id]/cv-preview.tsx`).
-- Bibliothèque de centaines d'exemples de CV (20 métiers de départ dans `lib/data/metiers.ts`, structure réutilisable — ajouter des entrées ne demande aucun changement de code).
-- Extension de navigateur (remplissage automatique de candidatures).
 - Génération de types TypeScript depuis le schéma Supabase réel (`supabase gen types typescript`) — le code type les entités manuellement.
+- Publication de l'extension sur le Chrome Web Store, et règles de remplissage spécifiques par site (Indeed, LinkedIn...) — voir `extension/README.md`.
+- Rédaction de contenu supplémentaire (plus de métiers, plus d'articles de blog) — structure prête, ajout de données pures sans changement de code (`lib/data/metiers.ts`, `lib/data/blog-posts.ts`).

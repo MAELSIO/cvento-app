@@ -2,7 +2,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { hasProAccess } from "@/lib/plan";
 import { EMPTY_CV_CONTENT, type CvContent } from "@/lib/types/cv";
-import { buildSobreDocx } from "@/lib/docx/sobre-template";
+import { buildCvDocx } from "@/lib/docx/cv-docx";
+import { DEFAULT_TEMPLATE_ID } from "@/lib/templates/registry";
 
 /** Export Word (DOCX) — réservé au plan Pro (voir cahier des charges, section Pro). */
 export async function GET(
@@ -29,7 +30,7 @@ export async function GET(
 
   const { data: cv } = await supabase
     .from("cvs")
-    .select("title, content")
+    .select("title, content, template")
     .eq("id", id)
     .eq("user_id", user.id)
     .single();
@@ -38,7 +39,7 @@ export async function GET(
   }
 
   const content: CvContent = { ...EMPTY_CV_CONTENT, ...(cv.content as Partial<CvContent>) };
-  const buffer = await buildSobreDocx(content);
+  const buffer = await buildCvDocx(content, cv.template || DEFAULT_TEMPLATE_ID);
   const filename = `${(cv.title || "CV").replace(/[^a-z0-9]+/gi, "-")}.docx`;
 
   return new NextResponse(new Uint8Array(buffer), {

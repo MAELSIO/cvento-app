@@ -7,6 +7,7 @@ import { matchKeywords } from "@/lib/ai/match-keywords";
 import { cvContentToText, type CvContent, type CvExperience, type CvFormation, type CvLangue } from "@/lib/types/cv";
 import { CvPreview } from "./cv-preview";
 import { CvScore } from "./cv-score";
+import { TemplatePicker } from "./template-picker";
 
 const inputClass =
   "rounded-[var(--radius-sm)] border-2 border-line px-3 py-2 text-sm focus:border-primary focus:outline-none";
@@ -39,6 +40,7 @@ export function CvEditor({
   initialTargetJobTitle,
   initialTargetJobDescription,
   initialContent,
+  initialTemplateId,
   isPro,
 }: {
   cvId: string;
@@ -46,9 +48,11 @@ export function CvEditor({
   initialTargetJobTitle: string;
   initialTargetJobDescription: string;
   initialContent: CvContent;
+  initialTemplateId: string;
   isPro: boolean;
 }) {
   const [title, setTitle] = useState(initialTitle);
+  const [templateId, setTemplateId] = useState(initialTemplateId);
   const [targetJobTitle, setTargetJobTitle] = useState(initialTargetJobTitle);
   const [targetJobDescription, setTargetJobDescription] = useState(initialTargetJobDescription);
   const [content, setContent] = useState<CvContent>(initialContent);
@@ -157,6 +161,8 @@ export function CvEditor({
 
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="flex flex-col gap-6">
+          <TemplatePicker cvId={cvId} templateId={templateId} isPro={isPro} onChange={setTemplateId} />
+
           {/* Ciblage du poste */}
           <section className="rounded-[var(--radius-lg)] border border-line bg-surface p-5">
             <h2 className="mb-3 font-display text-lg font-semibold">Poste visé</h2>
@@ -585,7 +591,7 @@ export function CvEditor({
 
         <div className="flex flex-col gap-6 lg:sticky lg:top-6 lg:self-start">
           <CvScore content={content} targetJobTitle={targetJobTitle} isPro={isPro} />
-          <CvPreview content={content} />
+          <CvPreview content={content} templateId={templateId} />
         </div>
       </div>
     </div>

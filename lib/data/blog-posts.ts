@@ -134,6 +134,155 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "cv-sans-experience-comment-le-construire",
+    title: "CV sans expérience professionnelle : comment le construire quand même",
+    excerpt:
+      "Étudiant, jeune diplômé, reconversion sans premier poste dans le secteur visé : voici comment construire un CV solide sans expérience professionnelle classique à mettre en avant.",
+    date: "2026-02-25",
+    sections: [
+      {
+        heading: "Élargir ce qu'on appelle 'expérience'",
+        paragraphs: [
+          "Stages, jobs étudiants, projets scolaires, bénévolat associatif, engagement dans une association étudiante : tout cela constitue une expérience valorisable si vous en tirez des responsabilités et des résultats concrets, exactement comme pour un emploi classique.",
+          "Un job d'été en caisse peut démontrer la gestion du stress et de la relation client ; un projet de groupe à l'école peut démontrer la gestion de projet et le travail en équipe. C'est la formulation qui fait la différence, pas seulement le contenu.",
+        ],
+      },
+      {
+        heading: "Inverser l'ordre des sections",
+        paragraphs: [
+          "Sans expérience professionnelle solide, la formation devient la section la plus forte : placez-la en haut du CV, juste après le résumé, plutôt qu'en bas comme c'est l'usage classique.",
+          "Ajoutez une section 'Projets' si vous en avez (projets scolaires, projets personnels, hackathons) : elle peut remplacer utilement une expérience professionnelle manquante.",
+        ],
+      },
+      {
+        heading: "Un résumé qui compense l'absence d'expérience",
+        paragraphs: [
+          "Le résumé en haut du CV doit expliquer clairement votre situation et votre motivation : 'Étudiant en dernière année de... recherche un poste de... pour mettre en pratique mes compétences en...' — cela cadre immédiatement la lecture du recruteur au lieu de le laisser deviner pourquoi l'expérience est absente.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "erreurs-courantes-cv-a-eviter",
+    title: "10 erreurs courantes sur un CV (et comment les corriger)",
+    excerpt:
+      "Certaines erreurs reviennent sur la majorité des CV que reçoit un recruteur. En voici 10 parmi les plus fréquentes, avec la correction à apporter.",
+    date: "2026-03-05",
+    sections: [
+      {
+        heading: "Les erreurs de contenu",
+        paragraphs: [
+          "1. Une accroche vague ('Motivé, dynamique, sérieux') sans rien de concret derrière — remplacez-la par un résumé factuel de votre profil et de ce que vous visez.",
+          "2. Des missions au lieu de résultats ('Chargé du service client') — ajoutez un résultat chiffré à chaque ligne quand c'est possible.",
+          "3. Un CV identique envoyé à toutes les candidatures — même 10 minutes d'ajustement des mots-clés par offre change nettement le taux de réponse.",
+        ],
+      },
+      {
+        heading: "Les erreurs de forme",
+        paragraphs: [
+          "4. Une mise en page en plusieurs colonnes ou avec des icônes — mal lue par les logiciels de tri automatique (voir notre article sur le format ATS).",
+          "5. Une police non standard ou une taille de texte inférieure à 10pt — illisible à l'impression comme à l'écran.",
+          "6. Un CV de 3 pages pour un début de carrière — une page suffit largement avant 5-7 ans d'expérience.",
+        ],
+      },
+      {
+        heading: "Les erreurs qui coûtent cher",
+        paragraphs: [
+          "7. Une adresse email peu professionnelle (surnom, chiffres aléatoires) — créez une adresse simple prénom.nom@fournisseur.fr dédiée à la recherche d'emploi.",
+          "8. Des fautes d'orthographe non relues — faites relire par une tierce personne, l'auteur d'un texte ne voit jamais toutes ses propres fautes.",
+          "9. Des dates incohérentes ou des trous non expliqués — une ligne courte suffit à couvrir une période creuse ('Voyage', 'Recherche active', 'Formation personnelle').",
+          "10. Un fichier nommé 'CV_final_v3_dernier.pdf' — renommez-le avec votre nom : 'CV_Prenom_Nom.pdf'.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "repondre-quels-sont-vos-defauts-entretien",
+    title: "Comment répondre à 'Quels sont vos défauts ?' en entretien",
+    excerpt:
+      "C'est l'une des questions les plus redoutées en entretien, et l'une des plus mal préparées. Voici une méthode simple pour y répondre sans se dévaloriser ni sonner faux.",
+    date: "2026-03-14",
+    sections: [
+      {
+        heading: "Pourquoi cette question est posée",
+        paragraphs: [
+          "Le recruteur ne cherche pas une confession : il évalue votre capacité à vous connaître et à prendre du recul sur vous-même. Une réponse trop lisse ('Je suis trop perfectionniste') est reconnue instantanément comme une esquive et joue contre vous.",
+        ],
+      },
+      {
+        heading: "La méthode en 3 temps",
+        paragraphs: [
+          "1. Nommez un vrai défaut, pertinent mais pas éliminatoire pour le poste (évitez par exemple de dire que vous êtes désorganisé pour un poste de gestion de projet).",
+          "2. Donnez un exemple concret où ce défaut s'est manifesté — cela rend la réponse crédible plutôt qu'abstraite.",
+          "3. Expliquez ce que vous avez mis en place pour le limiter. C'est cette troisième étape qui transforme un aveu de faiblesse en preuve de maturité professionnelle.",
+        ],
+      },
+      {
+        heading: "Un exemple concret",
+        paragraphs: [
+          "'J'ai tendance à vouloir tout vérifier moi-même avant de déléguer, ce qui m'a fait perdre du temps sur un projet où j'aurais dû faire confiance à mon équipe plus tôt. Depuis, je fixe des points d'étape clairs dès le départ plutôt que de tout contrôler en continu.' — précis, honnête, et orienté amélioration.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "reconversion-professionnelle-cv-parcours-atypique",
+    title: "Reconversion professionnelle : comment présenter un parcours atypique sur son CV",
+    excerpt:
+      "Changer de métier ne veut pas dire repartir de zéro. Voici comment structurer un CV de reconversion pour que votre ancien parcours devienne un atout plutôt qu'un frein.",
+    date: "2026-03-22",
+    sections: [
+      {
+        heading: "Le CV par compétences plutôt que chronologique",
+        paragraphs: [
+          "Un CV chronologique classique met en avant des intitulés de poste qui n'ont rien à voir avec le métier visé, ce qui peut dérouter le recruteur dès la première lecture.",
+          "Un CV organisé par compétences transversales (gestion de projet, relation client, analyse de données...) permet de regrouper des expériences de secteurs différents autour de ce qui compte réellement pour le poste visé, sans mentir sur la chronologie.",
+        ],
+      },
+      {
+        heading: "Assumer la reconversion dans le résumé",
+        paragraphs: [
+          "N'essayez pas de cacher le changement de cap : expliquez-le en une phrase claire dans le résumé ('Après 6 ans en comptabilité, en reconversion vers la gestion de projet, formé(e) en...'). Un recruteur qui comprend le POURQUOI est bien plus rassuré qu'un recruteur qui doit le deviner.",
+        ],
+      },
+      {
+        heading: "Valoriser la formation récente",
+        paragraphs: [
+          "Une formation courte ou une certification récente dans le nouveau domaine mérite d'être mise en évidence, même si elle est plus récente que vos expériences professionnelles — elle prouve un investissement concret dans la reconversion, pas seulement une intention.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "photo-sur-cv-en-france",
+    title: "Faut-il mettre une photo sur son CV en France ?",
+    excerpt:
+      "Contrairement au marché anglophone où la photo est proscrite (pour des raisons de non-discrimination), la question reste ouverte en France. Voici comment trancher selon votre situation.",
+    date: "2026-03-30",
+    sections: [
+      {
+        heading: "Ce que dit la loi",
+        paragraphs: [
+          "En France, la photo sur un CV n'est ni obligatoire ni interdite. Aucun texte de loi n'impose son absence, contrairement à certains pays (États-Unis, Royaume-Uni) où elle est déconseillée voire écartée par les recruteurs eux-mêmes pour éviter tout risque de discrimination à l'embauche.",
+        ],
+      },
+      {
+        heading: "Dans quels cas la mettre",
+        paragraphs: [
+          "Elle reste courante dans les secteurs à forte dimension relationnelle ou commerciale (vente, hôtellerie-restauration, accueil), où le recruteur peut légitimement s'attendre à voir à qui il aura affaire.",
+          "Si vous la mettez, choisissez une photo de qualité professionnelle (fond neutre, tenue soignée) — une photo de vacances recadrée fait plus de tort qu'une absence de photo.",
+        ],
+      },
+      {
+        heading: "Dans quels cas s'en passer",
+        paragraphs: [
+          "Pour les métiers techniques, cadres ou candidatures dans des grands groupes internationaux (souvent alignés sur les pratiques anglo-saxonnes), l'absence de photo est de plus en plus la norme et ne pénalise en rien la candidature.",
+          "En cas de doute, l'absence de photo reste le choix le plus sûr : elle ne joue jamais contre vous, alors qu'une photo mal choisie peut créer un a priori négatif avant même la lecture du contenu.",
+        ],
+      },
+    ],
+  },
 ];
 
 export function getBlogPost(slug: string) {

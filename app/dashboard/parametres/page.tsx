@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
+import { listApiTokens } from "@/lib/actions/api-tokens";
 import { ProfileForm } from "./profile-form";
 import { BillingSection } from "./billing-section";
+import { ExtensionTokens } from "./extension-tokens";
 import { DangerZone } from "./danger-zone";
 
 export default async function ParametresPage() {
@@ -9,13 +11,14 @@ export default async function ParametresPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: profile }, { data: subscription }] = await Promise.all([
+  const [{ data: profile }, { data: subscription }, tokens] = await Promise.all([
     supabase.from("profiles").select("full_name, phone").eq("id", user!.id).single(),
     supabase
       .from("subscriptions")
       .select("status, is_lifetime, stripe_subscription_id, current_period_end")
       .eq("user_id", user!.id)
       .single(),
+    listApiTokens(),
   ]);
 
   return (
@@ -33,6 +36,8 @@ export default async function ParametresPage() {
         hasStripeSubscription={!!subscription?.stripe_subscription_id}
         currentPeriodEnd={subscription?.current_period_end ?? null}
       />
+
+      <ExtensionTokens initialTokens={tokens} />
 
       <DangerZone />
     </div>

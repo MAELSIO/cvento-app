@@ -3,7 +3,8 @@ import { renderToBuffer } from "@react-pdf/renderer";
 import { createClient } from "@/lib/supabase/server";
 import { hasProAccess } from "@/lib/plan";
 import { EMPTY_CV_CONTENT, type CvContent } from "@/lib/types/cv";
-import { SobrePdfTemplate } from "@/lib/pdf/sobre-template";
+import { CvPdfDocument } from "@/lib/pdf/cv-pdf";
+import { DEFAULT_TEMPLATE_ID } from "@/lib/templates/registry";
 
 /**
  * Export PDF. Plan gratuit : mention "Créé avec CVento" en pied de page
@@ -25,7 +26,7 @@ export async function GET(
 
   const { data: cv } = await supabase
     .from("cvs")
-    .select("title, content")
+    .select("title, content, template")
     .eq("id", id)
     .eq("user_id", user.id)
     .single();
@@ -42,7 +43,11 @@ export async function GET(
 
   const content: CvContent = { ...EMPTY_CV_CONTENT, ...(cv.content as Partial<CvContent>) };
   const buffer = await renderToBuffer(
-    <SobrePdfTemplate content={content} watermark={!isPro} />
+    <CvPdfDocument
+      content={content}
+      templateId={cv.template || DEFAULT_TEMPLATE_ID}
+      watermark={!isPro}
+    />
   );
 
   const filename = `${(cv.title || "CV").replace(/[^a-z0-9]+/gi, "-")}.pdf`;

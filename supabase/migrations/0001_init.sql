@@ -52,7 +52,7 @@ create table if not exists public.cvs (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
   title text not null default 'Mon CV',
-  template text not null default 'sobre',
+  template text not null default 'classique-gris',
   content jsonb not null default '{}'::jsonb,
   target_job_title text,
   target_job_description text,

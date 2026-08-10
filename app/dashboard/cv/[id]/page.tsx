@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { hasProAccess } from "@/lib/plan";
 import { CvEditor } from "./cv-editor";
 import { EMPTY_CV_CONTENT, type CvContent } from "@/lib/types/cv";
+import { DEFAULT_TEMPLATE_ID } from "@/lib/templates/registry";
 
 export default async function CvEditPage({
   params,
@@ -43,6 +44,7 @@ export default async function CvEditPage({
       initialTargetJobTitle={cv.target_job_title ?? ""}
       initialTargetJobDescription={cv.target_job_description ?? ""}
       initialContent={content}
+      initialTemplateId={cv.template || DEFAULT_TEMPLATE_ID}
       isPro={hasProAccess(subscription)}
     />
   );

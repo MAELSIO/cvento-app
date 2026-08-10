@@ -1,45 +1,81 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import type { CvContent } from "@/lib/types/cv";
+import { getTemplate, type TemplateLayout } from "@/lib/templates/registry";
 
 /**
- * Template PDF "sobre" : une seule colonne, polices standard (Helvetica),
- * aucune icône ni tableau — pensé pour être parsé sans erreur par les
- * logiciels de tri automatique (ATS). Ne pas ajouter de mise en page en
- * colonnes ni d'éléments graphiques ici, c'est la contrainte n°1 du produit.
+ * Rendu PDF paramétré par template (lib/templates/registry.ts). La
+ * structure (une colonne, pas d'icône, pas de tableau) ne varie JAMAIS
+ * entre templates — seuls la police, la couleur d'accent et l'espacement
+ * changent. C'est ce qui garantit que les 18 templates restent tous
+ * compatibles ATS. Ne pas ajouter de mise en page en colonnes ici.
  */
-const styles = StyleSheet.create({
-  page: { padding: 40, fontSize: 10, fontFamily: "Helvetica", color: "#1a1a1a" },
-  name: { fontSize: 20, fontFamily: "Helvetica-Bold", marginBottom: 2 },
-  titre: { fontSize: 12, color: "#444444", marginBottom: 6 },
-  contactRow: { flexDirection: "row", flexWrap: "wrap", gap: 10, marginBottom: 12 },
-  contactItem: { fontSize: 9, color: "#555555" },
-  sectionTitle: {
-    fontSize: 10,
-    fontFamily: "Helvetica-Bold",
-    textTransform: "uppercase",
-    borderBottom: "1pt solid #cccccc",
-    paddingBottom: 3,
-    marginTop: 14,
-    marginBottom: 8,
-    color: "#24398f",
-  },
-  entryHeaderRow: { flexDirection: "row", justifyContent: "space-between" },
-  entryTitle: { fontFamily: "Helvetica-Bold" },
-  entryDates: { fontSize: 9, color: "#555555" },
-  entryLieu: { fontSize: 9, color: "#555555", marginBottom: 3 },
-  bulletRow: { flexDirection: "row", marginBottom: 2, paddingLeft: 4 },
-  bulletDot: { width: 10 },
-  entry: { marginBottom: 10 },
-  watermark: { position: "absolute", bottom: 20, left: 40, fontSize: 8, color: "#999999" },
-});
+function fontFor(layout: TemplateLayout) {
+  return layout === "classique"
+    ? { regular: "Times-Roman", bold: "Times-Bold" }
+    : { regular: "Helvetica", bold: "Helvetica-Bold" };
+}
 
-export function SobrePdfTemplate({
+function buildStyles(layout: TemplateLayout, accentHex: string) {
+  const font = fontFor(layout);
+  const compact = layout === "compact";
+  const accent = `#${accentHex}`;
+
+  return StyleSheet.create({
+    page: {
+      padding: compact ? 32 : 40,
+      fontSize: compact ? 9 : 10,
+      fontFamily: font.regular,
+      color: "#1a1a1a",
+    },
+    name: { fontSize: compact ? 18 : 20, fontFamily: font.bold, marginBottom: 2 },
+    titre: { fontSize: compact ? 11 : 12, color: "#444444", marginBottom: 6 },
+    contactRow: { flexDirection: "row", flexWrap: "wrap", gap: 10, marginBottom: compact ? 8 : 12 },
+    contactItem: { fontSize: 9, color: "#555555" },
+    sectionTitleUnderline: {
+      fontSize: compact ? 9 : 10,
+      fontFamily: font.bold,
+      textTransform: "uppercase",
+      borderBottom: `1pt solid ${accent}`,
+      paddingBottom: 3,
+      marginTop: compact ? 8 : 14,
+      marginBottom: compact ? 5 : 8,
+      color: accent,
+    },
+    sectionTitleBlock: {
+      fontSize: compact ? 9 : 10,
+      fontFamily: font.bold,
+      textTransform: "uppercase",
+      backgroundColor: accent,
+      color: "#ffffff",
+      paddingVertical: 3,
+      paddingHorizontal: 6,
+      marginTop: compact ? 8 : 14,
+      marginBottom: compact ? 5 : 8,
+    },
+    entryHeaderRow: { flexDirection: "row", justifyContent: "space-between" },
+    entryTitle: { fontFamily: font.bold },
+    entryDates: { fontSize: 9, color: "#555555" },
+    entryLieu: { fontSize: 9, color: "#555555", marginBottom: 3 },
+    bulletRow: { flexDirection: "row", marginBottom: 2, paddingLeft: 4 },
+    bulletDot: { width: 10 },
+    entry: { marginBottom: compact ? 6 : 10 },
+    watermark: { position: "absolute", bottom: 20, left: compact ? 32 : 40, fontSize: 8, color: "#999999" },
+  });
+}
+
+export function CvPdfDocument({
   content,
+  templateId,
   watermark,
 }: {
   content: CvContent;
+  templateId: string;
   watermark?: boolean;
 }) {
+  const template = getTemplate(templateId);
+  const styles = buildStyles(template.layout, template.color.hex);
+  const sectionTitleStyle = template.layout === "moderne" ? styles.sectionTitleBlock : styles.sectionTitleUnderline;
+
   const { identite, resume, experiences, formations, competences, langues } = content;
   const nomComplet = [identite.prenom, identite.nom].filter(Boolean).join(" ") || "Votre nom";
 
@@ -60,7 +96,7 @@ export function SobrePdfTemplate({
 
         {experiences.length > 0 && (
           <View>
-            <Text style={styles.sectionTitle}>Expérience professionnelle</Text>
+            <Text style={sectionTitleStyle}>Expérience professionnelle</Text>
             {experiences.map((exp) => (
               <View key={exp.id} style={styles.entry}>
                 <View style={styles.entryHeaderRow}>
@@ -86,7 +122,7 @@ export function SobrePdfTemplate({
 
         {formations.length > 0 && (
           <View>
-            <Text style={styles.sectionTitle}>Formation</Text>
+            <Text style={sectionTitleStyle}>Formation</Text>
             {formations.map((f) => (
               <View key={f.id} style={styles.entry}>
                 <View style={styles.entryHeaderRow}>
@@ -106,14 +142,14 @@ export function SobrePdfTemplate({
 
         {competences.length > 0 && (
           <View>
-            <Text style={styles.sectionTitle}>Compétences</Text>
+            <Text style={sectionTitleStyle}>Compétences</Text>
             <Text>{competences.join(" · ")}</Text>
           </View>
         )}
 
         {langues.length > 0 && (
           <View>
-            <Text style={styles.sectionTitle}>Langues</Text>
+            <Text style={sectionTitleStyle}>Langues</Text>
             <Text>{langues.map((l) => `${l.langue} (${l.niveau})`).join(" · ")}</Text>
           </View>
         )}
