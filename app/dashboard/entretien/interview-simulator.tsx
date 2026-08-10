@@ -29,17 +29,18 @@ export function InterviewSimulator({ cvs }: { cvs: Cv[] }) {
     if (!selectedCv) return;
     setError("");
     setLoadingQuestions(true);
-    try {
-      const generated = await generateInterviewQuestions({
-        targetJobTitle: selectedCv.target_job_title ?? "",
-        targetJobDescription: selectedCv.target_job_description ?? "",
-      });
-      setQuestions(generated.map((q) => ({ question: q, answer: "", feedback: null, loadingFeedback: false })));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur lors de la génération des questions.");
-    } finally {
-      setLoadingQuestions(false);
+    const result = await generateInterviewQuestions({
+      targetJobTitle: selectedCv.target_job_title ?? "",
+      targetJobDescription: selectedCv.target_job_description ?? "",
+    });
+    if (result.error !== undefined) {
+      setError(result.error);
+    } else {
+      setQuestions(
+        result.data.map((q) => ({ question: q, answer: "", feedback: null, loadingFeedback: false }))
+      );
     }
+    setLoadingQuestions(false);
   }
 
   function updateAnswer(idx: number, answer: string) {
@@ -50,12 +51,14 @@ export function InterviewSimulator({ cvs }: { cvs: Cv[] }) {
     const qa = questions[idx];
     if (!qa.answer.trim()) return;
     setQuestions((qs) => qs.map((q, i) => (i === idx ? { ...q, loadingFeedback: true } : q)));
-    try {
-      const feedback = await getInterviewFeedback({ question: qa.question, answer: qa.answer });
-      setQuestions((qs) => qs.map((q, i) => (i === idx ? { ...q, feedback, loadingFeedback: false } : q)));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur lors de l'analyse de la réponse.");
+    const result = await getInterviewFeedback({ question: qa.question, answer: qa.answer });
+    if (result.error !== undefined) {
+      setError(result.error);
       setQuestions((qs) => qs.map((q, i) => (i === idx ? { ...q, loadingFeedback: false } : q)));
+    } else {
+      setQuestions((qs) =>
+        qs.map((q, i) => (i === idx ? { ...q, feedback: result.data, loadingFeedback: false } : q))
+      );
     }
   }
 

@@ -37,19 +37,18 @@ export function LetterEditor({
   async function handleGenerate() {
     setError("");
     setGenerating(true);
-    try {
-      const letter = await generateCoverLetter({
-        cvSummaryText,
-        targetJobTitle,
-        targetJobDescription,
-        entreprise,
-      });
-      setContent(letter);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur lors de la génération IA.");
-    } finally {
-      setGenerating(false);
+    const result = await generateCoverLetter({
+      cvSummaryText,
+      targetJobTitle,
+      targetJobDescription,
+      entreprise,
+    });
+    if (result.error !== undefined) {
+      setError(result.error);
+    } else {
+      setContent(result.data);
     }
+    setGenerating(false);
   }
 
   return (

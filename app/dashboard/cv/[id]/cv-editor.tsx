@@ -73,36 +73,34 @@ export function CvEditor({
   async function handleGenerateBullets(exp: CvExperience) {
     setAiError("");
     setGeneratingExpId(exp.id);
-    try {
-      const bullets = await generateBullets({
-        poste: exp.poste,
-        entreprise: exp.entreprise,
-        motsCles: content.competences.join(", "),
-      });
+    const result = await generateBullets({
+      poste: exp.poste,
+      entreprise: exp.entreprise,
+      motsCles: content.competences.join(", "),
+    });
+    if (result.error !== undefined) {
+      setAiError(result.error);
+    } else {
       setContent((c) => ({
         ...c,
         experiences: c.experiences.map((e) =>
-          e.id === exp.id ? { ...e, bullets: [...e.bullets.filter(Boolean), ...bullets] } : e
+          e.id === exp.id ? { ...e, bullets: [...e.bullets.filter(Boolean), ...result.data] } : e
         ),
       }));
-    } catch (err) {
-      setAiError(err instanceof Error ? err.message : "Erreur lors de la génération IA.");
-    } finally {
-      setGeneratingExpId(null);
     }
+    setGeneratingExpId(null);
   }
 
   async function handleAnalyzeKeywords() {
     setAiError("");
     setAnalyzingKeywords(true);
-    try {
-      const keywords = await extractKeywords(targetJobDescription);
-      setKeywordResult(matchKeywords(keywords, cvContentToText(content)));
-    } catch (err) {
-      setAiError(err instanceof Error ? err.message : "Erreur lors de l'analyse des mots-clés.");
-    } finally {
-      setAnalyzingKeywords(false);
+    const result = await extractKeywords(targetJobDescription);
+    if (result.error !== undefined) {
+      setAiError(result.error);
+    } else {
+      setKeywordResult(matchKeywords(result.data, cvContentToText(content)));
     }
+    setAnalyzingKeywords(false);
   }
 
   return (
