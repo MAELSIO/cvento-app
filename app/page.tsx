@@ -1,4 +1,74 @@
 import { createClient } from "@/lib/supabase/server";
+import { CvPreview } from "@/app/dashboard/cv/[id]/cv-preview";
+import { computeAtsScore } from "@/lib/scoring/ats-score";
+import type { CvContent } from "@/lib/types/cv";
+
+/**
+ * Contenu d'exemple pour l'aperçu produit de la page d'accueil — un CV
+ * fictif, pas un vrai utilisateur. Rendu avec le vrai composant CvPreview
+ * et le vrai moteur de score (lib/scoring/ats-score.ts), donc le score
+ * affiché est réellement calculé, pas inventé.
+ */
+const exampleCv: CvContent = {
+  identite: {
+    prenom: "Camille",
+    nom: "Lefèvre",
+    titre: "Chargée de projet marketing digital",
+    email: "camille.lefevre@email.fr",
+    telephone: "06 12 34 56 78",
+    ville: "Lyon",
+    permis: true,
+  },
+  resume:
+    "Chargée de projet marketing avec 5 ans d'expérience en pilotage de campagnes digitales et gestion d'équipes. Spécialisée en acquisition, analyse de performance et coordination de prestataires.",
+  experiences: [
+    {
+      id: "1",
+      poste: "Chargée de projet marketing",
+      entreprise: "Nova Digital",
+      lieu: "Lyon",
+      dateDebut: "2021",
+      dateFin: "",
+      enCours: true,
+      bullets: [
+        "Piloté 12 campagnes multicanales par an, avec une hausse de 34 % du taux de conversion moyen.",
+        "Encadré une équipe de 3 alternants et coordonné 5 prestataires externes.",
+        "Réduit le coût d'acquisition client de 22 % en 18 mois grâce à l'optimisation continue des budgets.",
+      ],
+    },
+    {
+      id: "2",
+      poste: "Chargée de communication",
+      entreprise: "Atelier Verre",
+      lieu: "Villeurbanne",
+      dateDebut: "2019",
+      dateFin: "2021",
+      enCours: false,
+      bullets: [
+        "Développé la présence réseaux sociaux de la marque, avec une audience multipliée par 3.",
+        "Créé et animé le calendrier éditorial mensuel, en lien avec l'équipe commerciale.",
+      ],
+    },
+  ],
+  formations: [
+    {
+      id: "1",
+      diplome: "Master Marketing Digital",
+      etablissement: "IAE Lyon",
+      lieu: "Lyon",
+      dateDebut: "2017",
+      dateFin: "2019",
+    },
+  ],
+  competences: ["Google Ads", "Meta Ads", "SEO", "Analytics", "Gestion de projet", "Notion"],
+  langues: [
+    { id: "1", langue: "Anglais", niveau: "Courant" },
+    { id: "2", langue: "Espagnol", niveau: "Intermédiaire" },
+  ],
+};
+
+const exampleScore = computeAtsScore(exampleCv, exampleCv.identite.titre);
+const exampleHighlights = exampleScore.criteria.filter((c) => c.passed).slice(0, 4);
 
 const steps = [
   {
@@ -89,6 +159,9 @@ export default async function HomePage() {
       </header>
 
       <section className="mx-auto max-w-3xl px-6 py-20 text-center">
+        <p className="mx-auto mb-4 inline-block rounded-full bg-primary-tint px-3 py-1 text-xs font-bold text-primary-dark">
+          Nouveau — rejoignez les premiers utilisateurs
+        </p>
         <h1 className="text-4xl font-bold sm:text-5xl">
           Un CV qui passe les filtres ATS,{" "}
           <span className="text-primary">écrit avec vous par l&apos;IA</span>
@@ -115,6 +188,42 @@ export default async function HomePage() {
         <p className="mt-4 text-xs text-ink-faint">
           Gratuit pour commencer, sans carte bancaire.
         </p>
+      </section>
+
+      <section className="border-t border-line bg-surface py-16">
+        <div className="mx-auto max-w-4xl px-6">
+          <h2 className="text-center font-display text-2xl font-bold">À quoi ressemble le résultat</h2>
+          <p className="mx-auto mt-2 max-w-lg text-center text-sm text-ink-soft">
+            Exemple de CV et de score générés avec CVento — pas les données d&apos;un vrai utilisateur.
+          </p>
+          <div className="mt-10 grid gap-8 lg:grid-cols-[3fr_2fr] lg:items-start">
+            <div>
+              <CvPreview content={exampleCv} templateId="moderne-bleu" />
+            </div>
+            <div className="rounded-[var(--radius-lg)] border border-line bg-white p-6">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ink-faint">
+                Score de compatibilité (exemple)
+              </p>
+              <p className="mt-2 font-display text-4xl font-bold text-primary">
+                {exampleScore.score}<span className="text-xl text-ink-faint">/100</span>
+              </p>
+              <p className="mt-1 text-xs text-ink-faint">
+                Pour le poste : {exampleCv.identite.titre}
+              </p>
+              <ul className="mt-4 flex flex-col gap-2 text-sm">
+                {exampleHighlights.map((c) => (
+                  <li key={c.id} className="flex items-start gap-2">
+                    <span className="mt-0.5 flex-none text-primary">✓</span>
+                    <span className="text-ink-soft">{c.label}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 text-xs text-ink-faint">
+                Calculé sur une vingtaine de critères (identité, structure, contenu, formatage, ciblage).
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="border-t border-line py-16">
