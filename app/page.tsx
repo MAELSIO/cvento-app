@@ -1,69 +1,88 @@
-import Image from "next/image";
-
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+    <main>
+      <header className="mx-auto flex max-w-5xl items-center justify-between px-6 py-6">
+        <a href="/" className="flex items-center gap-2 font-display text-lg font-bold">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-white">
+            C
+          </span>
+          CVento
+        </a>
+        <nav className="flex items-center gap-4 text-sm font-semibold text-ink-soft">
+          <a href="/tarifs" className="hover:text-primary">Tarifs</a>
+          <a href="/login" className="hover:text-primary">Connexion</a>
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/signup"
+            className="rounded-[var(--radius-sm)] bg-primary px-4 py-2 text-white shadow-[0_4px_0_var(--primary-dark)]"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
+            Créer mon CV gratuitement
+          </a>
+        </nav>
+      </header>
+
+      <section className="mx-auto max-w-3xl px-6 py-20 text-center">
+        <h1 className="text-4xl font-bold sm:text-5xl">
+          Un CV qui passe les filtres ATS,{" "}
+          <span className="text-primary">écrit avec vous par l&apos;IA</span>
+        </h1>
+        <p className="mx-auto mt-5 max-w-xl text-lg text-ink-soft">
+          CVento génère votre CV et votre lettre de motivation, ciblés sur l&apos;offre
+          que vous visez, avec un score de compatibilité détaillé — pensé pour le
+          marché français.
+        </p>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="/signup"
+            className="rounded-[var(--radius-sm)] bg-primary px-6 py-3 text-sm font-bold text-white shadow-[0_4px_0_var(--primary-dark)]"
+          >
+            Créer mon CV gratuitement
           </a>
           <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/tarifs"
+            className="rounded-[var(--radius-sm)] border-2 border-line px-6 py-3 text-sm font-bold text-ink hover:border-primary"
           >
-            Documentation
+            Voir les tarifs
           </a>
         </div>
-      </main>
-    </div>
+        <p className="mt-4 text-xs text-ink-faint">
+          Gratuit pour commencer, sans carte bancaire.
+        </p>
+      </section>
+
+      <section className="border-t border-line bg-surface py-16">
+        <div className="mx-auto grid max-w-5xl gap-8 px-6 sm:grid-cols-3">
+          <div>
+            <h2 className="font-display text-lg font-semibold">Rédaction IA</h2>
+            <p className="mt-2 text-sm text-ink-soft">
+              Décrivez votre poste, l&apos;IA rédige des points d&apos;expérience
+              orientés résultats, avec verbes d&apos;action et chiffres.
+            </p>
+          </div>
+          <div>
+            <h2 className="font-display text-lg font-semibold">Ciblage par mots-clés</h2>
+            <p className="mt-2 text-sm text-ink-soft">
+              Collez l&apos;offre d&apos;emploi, CVento détecte les mots-clés
+              importants et vous montre ce qu&apos;il manque à votre CV.
+            </p>
+          </div>
+          <div>
+            <h2 className="font-display text-lg font-semibold">Lettre de motivation</h2>
+            <p className="mt-2 text-sm text-ink-soft">
+              Générée à partir de votre CV et de l&apos;offre ciblée, adaptée aux
+              codes français.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <footer className="px-6 py-10 text-center text-xs text-ink-faint">
+        <nav className="mb-3 flex flex-wrap items-center justify-center gap-4">
+          <a href="/tarifs" className="hover:text-primary">Tarifs</a>
+          <a href="/cgu" className="hover:text-primary">CGU</a>
+          <a href="/confidentialite" className="hover:text-primary">Confidentialité</a>
+        </nav>
+        © {new Date().getFullYear()} CVento
+      </footer>
+    </main>
   );
 }
