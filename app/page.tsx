@@ -1,5 +1,57 @@
 import { createClient } from "@/lib/supabase/server";
 
+const steps = [
+  {
+    title: "Créez votre compte",
+    text: "Inscription en 30 secondes, gratuite, sans carte bancaire.",
+  },
+  {
+    title: "Décrivez votre parcours",
+    text: "Postes, missions, résultats : l'IA rédige des points d'expérience clairs et orientés résultats à partir de vos réponses.",
+  },
+  {
+    title: "Collez l'offre visée",
+    text: "CVento détecte les mots-clés attendus et calcule un score de compatibilité détaillé avec l'offre.",
+  },
+  {
+    title: "Téléchargez votre CV",
+    text: "Export PDF ou Word, prêt à envoyer, avec votre lettre de motivation ciblée.",
+  },
+];
+
+const faq = [
+  {
+    q: "Est-ce vraiment gratuit ?",
+    a: "Oui. La création d'un CV, l'export PDF et le diagnostic sont accessibles gratuitement, sans carte bancaire. Les fonctionnalités Pro (CV illimités, IA illimitée, export Word, templates supplémentaires) sont proposées en abonnement optionnel.",
+  },
+  {
+    q: "Mes données sont-elles en sécurité ?",
+    a: "Vos données sont hébergées en Europe et ne sont jamais revendues ni utilisées pour entraîner des modèles d'IA tiers. Vous pouvez supprimer votre compte et vos données à tout moment depuis vos paramètres.",
+  },
+  {
+    q: "Combien de temps pour créer un CV ?",
+    a: "Comptez 5 à 10 minutes pour un premier CV complet si vous partez de zéro, et quelques minutes seulement pour l'adapter ensuite à une nouvelle offre grâce au ciblage automatique.",
+  },
+  {
+    q: "Le CV est-il vraiment optimisé pour les logiciels de recrutement (ATS) ?",
+    a: "Oui. Les templates CVento utilisent une structure simple à parser (pas de tableaux, colonnes complexes ou images en fond) et le ciblage par mots-clés vous montre exactement ce qui manque par rapport à l'offre visée, deux critères déterminants pour les logiciels ATS.",
+  },
+  {
+    q: "Puis-je annuler à tout moment ?",
+    a: "Oui, en un clic depuis vos paramètres, sans engagement ni justification à fournir.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+
 export default async function HomePage() {
   const supabase = await createClient();
   const { data: launchOffer } = await supabase
@@ -65,6 +117,23 @@ export default async function HomePage() {
         </p>
       </section>
 
+      <section className="border-t border-line py-16">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 className="text-center font-display text-2xl font-bold">Comment ça marche</h2>
+          <div className="mt-10 grid gap-8 sm:grid-cols-4">
+            {steps.map((step, i) => (
+              <div key={step.title}>
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
+                  {i + 1}
+                </div>
+                <h3 className="mt-3 font-display text-base font-semibold">{step.title}</h3>
+                <p className="mt-1 text-sm text-ink-soft">{step.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="border-t border-line bg-surface py-16">
         <div className="mx-auto grid max-w-5xl gap-8 px-6 sm:grid-cols-3">
           <div>
@@ -90,6 +159,44 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <section className="border-t border-line py-16">
+        <div className="mx-auto max-w-2xl px-6">
+          <h2 className="text-center font-display text-2xl font-bold">Questions fréquentes</h2>
+          <div className="mt-8 flex flex-col gap-3">
+            {faq.map((item) => (
+              <details
+                key={item.q}
+                className="group rounded-[var(--radius-sm)] border border-line bg-surface p-4"
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-display text-sm font-semibold marker:content-none [&::-webkit-details-marker]:hidden">
+                  {item.q}
+                  <span className="flex-none text-primary transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <p className="mt-2 text-sm text-ink-soft">{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-line bg-surface py-16 text-center">
+        <div className="mx-auto max-w-2xl px-6">
+          <h2 className="font-display text-2xl font-bold">Prêt à créer un CV qui passe les filtres ?</h2>
+          <a
+            href="/signup"
+            className="mt-6 inline-block rounded-[var(--radius-sm)] bg-primary px-6 py-3 text-sm font-bold text-white shadow-[0_4px_0_var(--primary-dark)]"
+          >
+            Créer mon CV gratuitement
+          </a>
+          <p className="mt-3 text-xs text-ink-faint">Gratuit pour commencer, sans carte bancaire.</p>
+        </div>
+      </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
 
       <footer className="px-6 py-10 text-center text-xs text-ink-faint">
         <nav className="mb-3 flex flex-wrap items-center justify-center gap-4">
