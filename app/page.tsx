@@ -94,8 +94,12 @@ export default async function HomePage() {
       <footer className="px-6 py-10 text-center text-xs text-ink-faint">
         <nav className="mb-3 flex flex-wrap items-center justify-center gap-4">
           <a href="/tarifs" className="hover:text-primary">Tarifs</a>
+          <a href="/blog" className="hover:text-primary">Blog</a>
+          <a href="/exemples-cv" className="hover:text-primary">Exemples de CV</a>
+          <a href="/diagnostic" className="hover:text-primary">Diagnostic gratuit</a>
           <a href="/cgu" className="hover:text-primary">CGU</a>
           <a href="/confidentialite" className="hover:text-primary">Confidentialité</a>
+          <a href="/cookies" className="hover:text-primary">Cookies</a>
         </nav>
         © {new Date().getFullYear()} CVento
       </footer>
