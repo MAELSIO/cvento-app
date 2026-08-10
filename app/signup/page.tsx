@@ -45,7 +45,9 @@ function SignupForm() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(dashboardNext(ref))}`,
+        redirectTo: ref
+          ? `${window.location.origin}/auth/callback?next=${encodeURIComponent(dashboardNext(ref))}`
+          : `${window.location.origin}/auth/callback`,
       },
     });
   }
