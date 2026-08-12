@@ -201,6 +201,73 @@ export default async function HomePage() {
         )}
       </section>
 
+      <section className="border-t border-line py-16">
+        <div className="mx-auto max-w-4xl px-6">
+          <h2 className="text-center font-display text-2xl font-bold">L&apos;interface, en aperçu</h2>
+          <p className="mx-auto mt-2 max-w-lg text-center text-sm text-ink-soft">
+            Reconstitution fidèle de l&apos;éditeur CVento, avec les données d&apos;exemple
+            ci-dessous — pas une capture figée d&apos;un vrai compte.
+          </p>
+          <div className="mt-10 overflow-hidden rounded-[var(--radius-lg)] border border-line shadow-sm">
+            <div className="flex items-center gap-2 border-b border-line bg-surface-alt px-4 py-2.5">
+              <span className="h-2.5 w-2.5 rounded-full bg-line" />
+              <span className="h-2.5 w-2.5 rounded-full bg-line" />
+              <span className="h-2.5 w-2.5 rounded-full bg-line" />
+              <span className="ml-2 text-xs text-ink-faint">cvento.fr/dashboard/cv/…</span>
+            </div>
+            <div className="grid gap-6 bg-white p-6 sm:grid-cols-[3fr_2fr]">
+              <div className="flex flex-col gap-4">
+                <div className="rounded-[var(--radius)] border border-line p-4">
+                  <p className="text-xs font-semibold text-ink-soft">Poste visé</p>
+                  <p className="mt-1 rounded-[var(--radius-sm)] border-2 border-line px-3 py-2 text-sm">
+                    Chargée de projet marketing digital
+                  </p>
+                  <p className="mt-3 text-xs font-semibold text-ink-soft">
+                    Offre d&apos;emploi ciblée
+                  </p>
+                  <p className="mt-1 rounded-[var(--radius-sm)] border-2 border-line px-3 py-2 text-xs text-ink-faint">
+                    Collez le texte de l&apos;offre ici…
+                  </p>
+                  <p className="mt-2 text-xs font-bold text-primary">✨ Analyser les mots-clés</p>
+                </div>
+                <div className="rounded-[var(--radius)] border border-line p-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-semibold text-ink-soft">Points clés (un par ligne)</p>
+                    <p className="text-xs font-bold text-primary">✨ Générer avec l&apos;IA</p>
+                  </div>
+                  <ul className="mt-2 flex flex-col gap-1 text-xs text-ink-soft">
+                    <li>• Piloté 5 campagnes marketing omnicanales chez Nova Digital…</li>
+                    <li>• Optimisé le référencement naturel (SEO) du site web…</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="rounded-[var(--radius-lg)] border border-line bg-surface p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-ink-faint">
+                  Score de compatibilité ATS
+                </p>
+                <p className="mt-1 font-display text-3xl font-bold text-primary">
+                  75<span className="text-lg text-ink-faint">/100</span>
+                </p>
+                <ul className="mt-3 flex flex-col gap-1.5 text-xs">
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-primary">✓</span>
+                    <span className="text-ink-soft">Téléphone renseigné</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-primary">✓</span>
+                    <span className="text-ink-soft">Résumé/accroche présent</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-primary">✓</span>
+                    <span className="text-ink-soft">Verbes d&apos;action utilisés</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="border-t border-line bg-surface py-16">
         <div className="mx-auto max-w-4xl px-6">
           <h2 className="text-center font-display text-2xl font-bold">À quoi ressemble le résultat</h2>
