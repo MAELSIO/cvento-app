@@ -98,6 +98,16 @@ export default async function TarifsPage() {
         </a>
         .
       </p>
+
+      <footer className="mt-16 border-t border-line pt-8 text-center text-xs text-ink-faint">
+        <p>
+          Une question avant de vous décider ?{" "}
+          <a href="mailto:maelsiohan01@gmail.com" className="text-primary hover:underline">
+            maelsiohan01@gmail.com
+          </a>
+          , on répond vite.
+        </p>
+      </footer>
     </main>
   );
 }

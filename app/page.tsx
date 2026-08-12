@@ -193,6 +193,11 @@ export default async function HomePage() {
         <p className="mt-4 text-xs text-ink-faint">
           Gratuit pour commencer, sans carte bancaire.
         </p>
+        <ul className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold text-ink-soft">
+          <li>🇫🇷 Pensé pour le marché français</li>
+          <li>🔒 Données hébergées en Europe, jamais revendues</li>
+          <li>🛡️ Résiliation en un clic, sans justification</li>
+        </ul>
         {!AI_FEATURES_ENABLED && (
           <p className="mx-auto mt-3 max-w-md text-xs font-semibold text-gold">
             La rédaction et le ciblage par IA arrivent très bientôt. Le CV, le score
