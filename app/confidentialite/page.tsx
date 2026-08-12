@@ -8,8 +8,9 @@ export default function ConfidentialitePage() {
     <LegalPage title="Politique de confidentialité" updated="10 août 2026">
       <LegalSection title="1. Responsable du traitement">
         <p>
-          [Éditeur — raison sociale à compléter], éditeur de CVento, est responsable du
-          traitement des données personnelles décrites ci-dessous. Contact :{" "}
+          Mael Siohan, entrepreneur individuel (micro-entreprise), SIRET 108 258 542 00019,
+          France, éditeur de CVento, est responsable du traitement des données personnelles
+          décrites ci-dessous. Contact :{" "}
           <a href="mailto:maelsiohan01@gmail.com" className="text-primary hover:underline">
             maelsiohan01@gmail.com
           </a>

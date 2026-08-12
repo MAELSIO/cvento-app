@@ -4,11 +4,8 @@ import { LegalPage, LegalSection } from "@/components/LegalPage";
 export const metadata: Metadata = { title: "CGU — CVento", robots: { index: false } };
 
 /**
- * [Éditeur] est un placeholder — à remplacer par la raison sociale et le
- * SIRET réels une fois l'entité légale enregistrée (indispensable avant
- * toute activation de paiements Stripe en mode live). Un avocat devrait
- * relire ces CGU avant mise en ligne réelle du service payant, comme pour
- * Facilo Pro.
+ * Un avocat devrait relire ces CGU avant mise en ligne réelle du service
+ * payant, comme pour Facilo Pro.
  */
 export default function CguPage() {
   return (
@@ -17,7 +14,8 @@ export default function CguPage() {
         <p>
           Les présentes Conditions Générales d&apos;Utilisation et de Vente (CGU/CGV) régissent
           l&apos;accès et l&apos;utilisation du service CVento, accessible à l&apos;adresse
-          cvento.fr, édité par [Éditeur — raison sociale et SIRET à compléter].
+          cvento.fr, édité par Mael Siohan, entrepreneur individuel (micro-entreprise), SIRET
+          108 258 542 00019, France.
         </p>
       </LegalSection>
 
