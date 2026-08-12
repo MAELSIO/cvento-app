@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { saveCv } from "@/lib/actions/cvs";
 import { generateBullets, extractKeywords } from "@/lib/actions/ai";
+import { AI_FEATURES_ENABLED, AI_COMING_SOON_MESSAGE } from "@/lib/ai/feature-flag";
 import { matchKeywords } from "@/lib/ai/match-keywords";
 import { cvContentToText, type CvContent, type CvExperience, type CvFormation, type CvLangue } from "@/lib/types/cv";
 import { CvPreview } from "./cv-preview";
@@ -71,6 +72,10 @@ export function CvEditor({
   }
 
   async function handleGenerateBullets(exp: CvExperience) {
+    if (!AI_FEATURES_ENABLED) {
+      setAiError(AI_COMING_SOON_MESSAGE);
+      return;
+    }
     setAiError("");
     setGeneratingExpId(exp.id);
     const result = await generateBullets({
@@ -92,6 +97,10 @@ export function CvEditor({
   }
 
   async function handleAnalyzeKeywords() {
+    if (!AI_FEATURES_ENABLED) {
+      setAiError(AI_COMING_SOON_MESSAGE);
+      return;
+    }
     setAiError("");
     setAnalyzingKeywords(true);
     const result = await extractKeywords(targetJobDescription);
@@ -189,10 +198,14 @@ export function CvEditor({
               <button
                 type="button"
                 onClick={handleAnalyzeKeywords}
-                disabled={!targetJobDescription.trim() || analyzingKeywords}
+                disabled={!targetJobDescription.trim() || analyzingKeywords || !AI_FEATURES_ENABLED}
                 className="self-start text-xs font-bold text-primary hover:underline disabled:opacity-50"
               >
-                {analyzingKeywords ? "Analyse..." : "✨ Analyser les mots-clés"}
+                {!AI_FEATURES_ENABLED
+                  ? "✨ Analyser les mots-clés (bientôt disponible)"
+                  : analyzingKeywords
+                    ? "Analyse..."
+                    : "✨ Analyser les mots-clés"}
               </button>
               {keywordResult && (
                 <div className="rounded-[var(--radius-sm)] bg-surface-alt p-3">
@@ -393,10 +406,14 @@ export function CvEditor({
                       <button
                         type="button"
                         onClick={() => handleGenerateBullets(exp)}
-                        disabled={generatingExpId === exp.id || !exp.poste}
+                        disabled={generatingExpId === exp.id || !exp.poste || !AI_FEATURES_ENABLED}
                         className="text-xs font-bold text-primary hover:underline disabled:opacity-50"
                       >
-                        {generatingExpId === exp.id ? "Génération..." : "✨ Générer avec l'IA"}
+                        {!AI_FEATURES_ENABLED
+                          ? "✨ Générer avec l'IA (bientôt disponible)"
+                          : generatingExpId === exp.id
+                            ? "Génération..."
+                            : "✨ Générer avec l'IA"}
                       </button>
                     </div>
                     <textarea

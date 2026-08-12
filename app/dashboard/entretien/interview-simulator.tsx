@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { generateInterviewQuestions, getInterviewFeedback } from "@/lib/actions/ai";
+import { AI_FEATURES_ENABLED, AI_COMING_SOON_MESSAGE } from "@/lib/ai/feature-flag";
 
 type Cv = {
   id: string;
@@ -27,6 +28,10 @@ export function InterviewSimulator({ cvs }: { cvs: Cv[] }) {
 
   async function handleGenerateQuestions() {
     if (!selectedCv) return;
+    if (!AI_FEATURES_ENABLED) {
+      setError(AI_COMING_SOON_MESSAGE);
+      return;
+    }
     setError("");
     setLoadingQuestions(true);
     const result = await generateInterviewQuestions({
@@ -50,6 +55,10 @@ export function InterviewSimulator({ cvs }: { cvs: Cv[] }) {
   async function handleFeedback(idx: number) {
     const qa = questions[idx];
     if (!qa.answer.trim()) return;
+    if (!AI_FEATURES_ENABLED) {
+      setError(AI_COMING_SOON_MESSAGE);
+      return;
+    }
     setQuestions((qs) => qs.map((q, i) => (i === idx ? { ...q, loadingFeedback: true } : q)));
     const result = await getInterviewFeedback({ question: qa.question, answer: qa.answer });
     if (result.error !== undefined) {
@@ -82,10 +91,14 @@ export function InterviewSimulator({ cvs }: { cvs: Cv[] }) {
         <button
           type="button"
           onClick={handleGenerateQuestions}
-          disabled={loadingQuestions || !selectedCv?.target_job_title}
+          disabled={loadingQuestions || !selectedCv?.target_job_title || !AI_FEATURES_ENABLED}
           className="rounded-[var(--radius-sm)] bg-primary px-4 py-2 text-sm font-bold text-white shadow-[0_4px_0_var(--primary-dark)] disabled:opacity-60"
         >
-          {loadingQuestions ? "Génération..." : "✨ Générer des questions"}
+          {!AI_FEATURES_ENABLED
+            ? "✨ Générer des questions (bientôt disponible)"
+            : loadingQuestions
+              ? "Génération..."
+              : "✨ Générer des questions"}
         </button>
       </div>
 
@@ -115,10 +128,14 @@ export function InterviewSimulator({ cvs }: { cvs: Cv[] }) {
             <button
               type="button"
               onClick={() => handleFeedback(idx)}
-              disabled={qa.loadingFeedback || !qa.answer.trim()}
+              disabled={qa.loadingFeedback || !qa.answer.trim() || !AI_FEATURES_ENABLED}
               className="mt-2 text-xs font-bold text-primary hover:underline disabled:opacity-50"
             >
-              {qa.loadingFeedback ? "Analyse..." : "Obtenir un feedback IA"}
+              {!AI_FEATURES_ENABLED
+                ? "Obtenir un feedback IA (bientôt disponible)"
+                : qa.loadingFeedback
+                  ? "Analyse..."
+                  : "Obtenir un feedback IA"}
             </button>
             {qa.feedback && (
               <p className="mt-3 rounded-[var(--radius-sm)] bg-primary-tint p-3 text-sm text-primary-dark">

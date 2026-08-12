@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { saveCoverLetter } from "@/lib/actions/cover-letters";
 import { generateCoverLetter } from "@/lib/actions/ai";
+import { AI_FEATURES_ENABLED, AI_COMING_SOON_MESSAGE } from "@/lib/ai/feature-flag";
 
 export function LetterEditor({
   letterId,
@@ -35,6 +36,10 @@ export function LetterEditor({
   }
 
   async function handleGenerate() {
+    if (!AI_FEATURES_ENABLED) {
+      setError(AI_COMING_SOON_MESSAGE);
+      return;
+    }
     setError("");
     setGenerating(true);
     const result = await generateCoverLetter({
@@ -94,10 +99,14 @@ export function LetterEditor({
         <button
           type="button"
           onClick={handleGenerate}
-          disabled={generating}
+          disabled={generating || !AI_FEATURES_ENABLED}
           className="rounded-[var(--radius-sm)] bg-gold px-4 py-2 text-sm font-bold text-white disabled:opacity-60"
         >
-          {generating ? "Génération..." : "✨ Générer avec l'IA"}
+          {!AI_FEATURES_ENABLED
+            ? "✨ Générer avec l'IA (bientôt disponible)"
+            : generating
+              ? "Génération..."
+              : "✨ Générer avec l'IA"}
         </button>
       </div>
 
