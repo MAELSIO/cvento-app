@@ -57,6 +57,7 @@ export function CvEditor({
   const [targetJobTitle, setTargetJobTitle] = useState(initialTargetJobTitle);
   const [targetJobDescription, setTargetJobDescription] = useState(initialTargetJobDescription);
   const [content, setContent] = useState<CvContent>(initialContent);
+  const [competencesInput, setCompetencesInput] = useState(initialContent.competences.join(", "));
   const [isPending, startTransition] = useTransition();
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [generatingExpId, setGeneratingExpId] = useState<string | null>(null);
@@ -537,13 +538,15 @@ export function CvEditor({
           <section className="rounded-[var(--radius-lg)] border border-line bg-surface p-5">
             <h2 className="mb-3 font-display text-lg font-semibold">Compétences</h2>
             <input
-              value={content.competences.join(", ")}
-              onChange={(e) =>
+              value={competencesInput}
+              onChange={(e) => {
+                const raw = e.target.value;
+                setCompetencesInput(raw);
                 setContent({
                   ...content,
-                  competences: e.target.value.split(",").map((c) => c.trim()).filter(Boolean),
-                })
-              }
+                  competences: raw.split(",").map((c) => c.trim()).filter(Boolean),
+                });
+              }}
               className={`${inputClass} w-full`}
               placeholder="Séparées par des virgules : Excel, gestion de projet, SEPA..."
             />
