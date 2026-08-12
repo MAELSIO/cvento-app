@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { hasProAccess, FREE_PLAN_MAX_CVS } from "@/lib/plan";
 import { createCv, deleteCv } from "@/lib/actions/cvs";
 import { redeemReferral } from "@/lib/actions/referrals";
+import { AI_FEATURES_ENABLED } from "@/lib/ai/feature-flag";
 
 export default async function DashboardPage({
   searchParams,
@@ -35,7 +36,8 @@ export default async function DashboardPage({
     <div>
       {ref && (
         <p className="mb-6 rounded-[var(--radius-sm)] bg-primary-tint p-3 text-sm font-semibold text-primary-dark">
-          Bienvenue ! Votre bonus de parrainage (générations IA en plus) a été appliqué.
+          Bienvenue ! Votre bonus de parrainage (générations IA en plus) a été appliqué
+          {!AI_FEATURES_ENABLED && " — il sera utilisable dès l'activation de l'IA"}.
         </p>
       )}
       {checkout === "success" && (
