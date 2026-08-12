@@ -165,7 +165,7 @@ export default async function HomePage() {
 
       <section className="mx-auto max-w-3xl px-6 py-20 text-center">
         <p className="mx-auto mb-4 inline-block rounded-full bg-primary-tint px-3 py-1 text-xs font-bold text-primary-dark">
-          Nouveau — rejoignez les premiers utilisateurs
+          100% gratuit pour commencer — sans carte bancaire
         </p>
         <h1 className="text-4xl font-bold sm:text-5xl">
           Un CV qui passe les filtres ATS,{" "}
