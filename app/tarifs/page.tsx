@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { AI_FEATURES_ENABLED } from "@/lib/ai/feature-flag";
 import { CheckoutButton } from "./checkout-button";
 
 const ctaClass =
@@ -31,7 +32,7 @@ export default async function TarifsPage() {
           <ul className="mt-4 flex flex-col gap-2 text-sm text-ink-soft">
             <li>1 CV actif</li>
             <li>1 template</li>
-            <li>IA limitée</li>
+            <li>IA limitée{!AI_FEATURES_ENABLED && " (bientôt disponible)"}</li>
             <li>Export PDF avec mention CVento</li>
           </ul>
           <a href="/signup" className="mt-6 block rounded-[var(--radius-sm)] border-2 border-line px-4 py-3 text-center text-sm font-bold text-ink hover:border-primary">
@@ -49,9 +50,9 @@ export default async function TarifsPage() {
           <ul className="mt-4 flex flex-col gap-2 text-sm text-ink-soft">
             <li>CV illimités</li>
             <li>15-20 templates</li>
-            <li>IA illimitée + ciblage mots-clés</li>
-            <li>Lettre de motivation IA</li>
-            <li>Préparation d&apos;entretien</li>
+            <li>IA illimitée + ciblage mots-clés{!AI_FEATURES_ENABLED && " (bientôt disponible)"}</li>
+            <li>Lettre de motivation IA{!AI_FEATURES_ENABLED && " (bientôt disponible)"}</li>
+            <li>Préparation d&apos;entretien{!AI_FEATURES_ENABLED && " (bientôt disponible)"}</li>
             <li>Export PDF et Word sans filigrane</li>
           </ul>
           <CheckoutButton plan="monthly" loggedIn={!!user} className={`${ctaClass} mt-6`}>

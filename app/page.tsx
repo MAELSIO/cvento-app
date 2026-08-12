@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { CvPreview } from "@/app/dashboard/cv/[id]/cv-preview";
 import { computeAtsScore } from "@/lib/scoring/ats-score";
+import { AI_FEATURES_ENABLED } from "@/lib/ai/feature-flag";
 import type { CvContent } from "@/lib/types/cv";
 
 /**
@@ -77,7 +78,9 @@ const steps = [
   },
   {
     title: "Décrivez votre parcours",
-    text: "Postes, missions, résultats : l'IA rédige des points d'expérience clairs et orientés résultats à partir de vos réponses.",
+    text: AI_FEATURES_ENABLED
+      ? "Postes, missions, résultats : l'IA rédige des points d'expérience clairs et orientés résultats à partir de vos réponses."
+      : "Postes, missions, résultats : décrivez votre parcours vous-même dès maintenant. La rédaction assistée par IA arrive très bientôt.",
   },
   {
     title: "Collez l'offre visée",
@@ -92,7 +95,9 @@ const steps = [
 const faq = [
   {
     q: "Est-ce vraiment gratuit ?",
-    a: "Oui. La création d'un CV, l'export PDF et le diagnostic sont accessibles gratuitement, sans carte bancaire. Les fonctionnalités Pro (CV illimités, IA illimitée, export Word, templates supplémentaires) sont proposées en abonnement optionnel.",
+    a: AI_FEATURES_ENABLED
+      ? "Oui. La création d'un CV, l'export PDF et le diagnostic sont accessibles gratuitement, sans carte bancaire. Les fonctionnalités Pro (CV illimités, IA illimitée, export Word, templates supplémentaires) sont proposées en abonnement optionnel."
+      : "Oui. La création d'un CV, l'export PDF et le diagnostic sont accessibles gratuitement, sans carte bancaire. Les fonctionnalités Pro (CV illimités, export Word, templates supplémentaires) sont proposées en abonnement optionnel — la rédaction et le ciblage par IA sont en cours d'activation et arrivent très bientôt, pour tous les plans.",
   },
   {
     q: "Mes données sont-elles en sécurité ?",
@@ -188,6 +193,12 @@ export default async function HomePage() {
         <p className="mt-4 text-xs text-ink-faint">
           Gratuit pour commencer, sans carte bancaire.
         </p>
+        {!AI_FEATURES_ENABLED && (
+          <p className="mx-auto mt-3 max-w-md text-xs font-semibold text-gold">
+            La rédaction et le ciblage par IA arrivent très bientôt. Le CV, le score
+            de compatibilité et l&apos;export sont utilisables dès maintenant.
+          </p>
+        )}
       </section>
 
       <section className="border-t border-line bg-surface py-16">
@@ -246,21 +257,36 @@ export default async function HomePage() {
       <section className="border-t border-line bg-surface py-16">
         <div className="mx-auto grid max-w-5xl gap-8 px-6 sm:grid-cols-3">
           <div>
-            <h2 className="font-display text-lg font-semibold">Rédaction IA</h2>
+            <h2 className="font-display text-lg font-semibold">
+              Rédaction IA
+              {!AI_FEATURES_ENABLED && (
+                <span className="ml-2 text-xs font-semibold text-gold">(bientôt disponible)</span>
+              )}
+            </h2>
             <p className="mt-2 text-sm text-ink-soft">
               Décrivez votre poste, l&apos;IA rédige des points d&apos;expérience
               orientés résultats, avec verbes d&apos;action et chiffres.
             </p>
           </div>
           <div>
-            <h2 className="font-display text-lg font-semibold">Ciblage par mots-clés</h2>
+            <h2 className="font-display text-lg font-semibold">
+              Ciblage par mots-clés
+              {!AI_FEATURES_ENABLED && (
+                <span className="ml-2 text-xs font-semibold text-gold">(bientôt disponible)</span>
+              )}
+            </h2>
             <p className="mt-2 text-sm text-ink-soft">
               Collez l&apos;offre d&apos;emploi, CVento détecte les mots-clés
               importants et vous montre ce qu&apos;il manque à votre CV.
             </p>
           </div>
           <div>
-            <h2 className="font-display text-lg font-semibold">Lettre de motivation</h2>
+            <h2 className="font-display text-lg font-semibold">
+              Lettre de motivation
+              {!AI_FEATURES_ENABLED && (
+                <span className="ml-2 text-xs font-semibold text-gold">(bientôt disponible)</span>
+              )}
+            </h2>
             <p className="mt-2 text-sm text-ink-soft">
               Générée à partir de votre CV et de l&apos;offre ciblée, adaptée aux
               codes français.
