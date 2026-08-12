@@ -1,9 +1,9 @@
 /**
- * Coupe-circuit temporaire : passer à `true` dès que des crédits API
- * Anthropic sont disponibles. Les 4 fonctionnalités IA (points d'expérience,
- * mots-clés, lettre de motivation, entretien) restent visibles dans
- * l'interface mais désactivées, pour ne pas surprendre les utilisateurs.
+ * Coupe-circuit temporaire. Actuellement `true` : l'IA tourne sur Gemini
+ * (niveau gratuit, voir lib/ai/client.ts) en attendant les premières
+ * ventes. Repasser à `false` si le quota gratuit Gemini est épuisé et
+ * qu'aucun crédit Anthropic n'est encore disponible.
  */
-export const AI_FEATURES_ENABLED = false;
+export const AI_FEATURES_ENABLED = true;
 
 export const AI_COMING_SOON_MESSAGE = "Bientôt disponible.";
