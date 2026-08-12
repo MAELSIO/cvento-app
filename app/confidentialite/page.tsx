@@ -38,7 +38,7 @@ export default function ConfidentialitePage() {
       <LegalSection title="4. Hébergement et sous-traitants">
         <ul className="list-disc pl-5">
           <li><strong>Supabase</strong> (base de données et authentification) — hébergement en Union Européenne (région Frankfurt).</li>
-          <li><strong>Anthropic</strong> (génération de contenu par IA) — le contenu du CV et de l&apos;offre ciblée est transmis pour générer les suggestions.</li>
+          <li><strong>Google (API Gemini)</strong> (génération de contenu par IA) — le contenu du CV et de l&apos;offre ciblée est transmis pour générer les suggestions.</li>
           <li><strong>Stripe</strong> (paiement) — traite les données de paiement selon sa propre politique de confidentialité.</li>
           <li><strong>Resend</strong> (envoi d&apos;emails transactionnels et de relance).</li>
           <li><strong>Vercel</strong> (hébergement de l&apos;application).</li>
