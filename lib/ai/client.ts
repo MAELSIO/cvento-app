@@ -7,7 +7,7 @@
  * signatures askClaudeJson/askClaudeText sont inchangées, donc aucun
  * autre fichier n'a besoin d'être touché.
  */
-const GEMINI_MODEL = "gemini-2.5-flash";
+const GEMINI_MODEL = "gemini-flash-latest";
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
 
 const AI_UNAVAILABLE_MESSAGE =
