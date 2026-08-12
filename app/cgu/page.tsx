@@ -46,7 +46,20 @@ export default function CguPage() {
         </p>
       </LegalSection>
 
-      <LegalSection title="5. Contenu généré par intelligence artificielle">
+      <LegalSection title="5. Garantie satisfait ou remboursé">
+        <p>
+          Conformément à son droit légal de rétractation (article L221-18 du Code de la
+          consommation), l&apos;utilisateur consommateur dispose de 14 jours à compter de son
+          paiement pour demander le remboursement intégral de son abonnement Pro (mensuel,
+          annuel ou à vie), sans justification, en écrivant à{" "}
+          <a href="mailto:maelsiohan01@gmail.com" className="text-primary hover:underline">
+            maelsiohan01@gmail.com
+          </a>
+          .
+        </p>
+      </LegalSection>
+
+      <LegalSection title="6. Contenu généré par intelligence artificielle">
         <p>
           Les textes générés par l&apos;IA (points d&apos;expérience, lettres de motivation,
           questions et retours d&apos;entretien) sont des suggestions. L&apos;utilisateur reste
@@ -55,7 +68,7 @@ export default function CguPage() {
         </p>
       </LegalSection>
 
-      <LegalSection title="6. Propriété intellectuelle">
+      <LegalSection title="7. Propriété intellectuelle">
         <p>
           Les CV, lettres de motivation et contenus créés par l&apos;utilisateur lui
           appartiennent. La marque CVento, le site et son code restent la propriété de
@@ -63,7 +76,7 @@ export default function CguPage() {
         </p>
       </LegalSection>
 
-      <LegalSection title="7. Responsabilité">
+      <LegalSection title="8. Responsabilité">
         <p>
           CVento est un outil d&apos;aide à la candidature ; il ne garantit ni entretien ni
           embauche. CVento ne saurait être tenu responsable des décisions prises par des
@@ -71,18 +84,18 @@ export default function CguPage() {
         </p>
       </LegalSection>
 
-      <LegalSection title="8. Résiliation et suppression de compte">
+      <LegalSection title="9. Résiliation et suppression de compte">
         <p>
           L&apos;utilisateur peut résilier son abonnement et/ou supprimer définitivement son
           compte et ses données à tout moment depuis /dashboard/parametres.
         </p>
       </LegalSection>
 
-      <LegalSection title="9. Droit applicable">
+      <LegalSection title="10. Droit applicable">
         <p>Les présentes CGU sont soumises au droit français.</p>
       </LegalSection>
 
-      <LegalSection title="10. Contact">
+      <LegalSection title="11. Contact">
         <p>
           Pour toute question : <a href="mailto:maelsiohan01@gmail.com" className="text-primary hover:underline">maelsiohan01@gmail.com</a>
         </p>

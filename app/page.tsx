@@ -295,6 +295,60 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="border-t border-line bg-surface py-16">
+        <div className="mx-auto max-w-4xl px-6">
+          <h2 className="text-center font-display text-2xl font-bold">
+            Pensé pour le marché français, concrètement
+          </h2>
+          <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-ink-soft">
+            La plupart des générateurs de CV populaires sont conçus pour le marché
+            anglo-saxon. Les codes n&apos;y sont pas les mêmes.
+          </p>
+          <div className="mt-10 grid gap-8 sm:grid-cols-2">
+            <div>
+              <h3 className="font-display text-base font-semibold">
+                La lettre de motivation reste incontournable
+              </h3>
+              <p className="mt-1 text-sm text-ink-soft">
+                Aux États-Unis et au Royaume-Uni, elle a quasiment disparu. En France,
+                elle est encore attendue pour la majorité des candidatures — CVento la
+                génère nativement, pas comme un module accessoire.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-display text-base font-semibold">
+                Une structure de CV différente
+              </h3>
+              <p className="mt-1 text-sm text-ink-soft">
+                Pas de &laquo; objective statement &raquo; à l&apos;américaine : les templates
+                CVento suivent la structure attendue par les recruteurs français
+                (identité, résumé, expériences, formation, compétences), sur une page.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-display text-base font-semibold">
+                Des intitulés de section en français
+              </h3>
+              <p className="mt-1 text-sm text-ink-soft">
+                Les logiciels de tri (ATS) utilisés par les entreprises françaises
+                cherchent des intitulés comme &laquo; Expérience professionnelle &raquo; ou
+                &laquo; Formation &raquo;, pas leurs équivalents anglais mal traduits.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-display text-base font-semibold">
+                Des formules de politesse françaises
+              </h3>
+              <p className="mt-1 text-sm text-ink-soft">
+                Les lettres générées respectent les codes français (formule d&apos;appel,
+                structure en trois paragraphes, formule de politesse de clôture),
+                pas des tournures traduites de l&apos;anglais.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="border-t border-line py-16">
         <div className="mx-auto max-w-2xl px-6">
           <h2 className="text-center font-display text-2xl font-bold">Questions fréquentes</h2>
@@ -343,6 +397,12 @@ export default async function HomePage() {
           <a href="/confidentialite" className="hover:text-primary">Confidentialité</a>
           <a href="/cookies" className="hover:text-primary">Cookies</a>
         </nav>
+        <p className="mb-3">
+          Une question ?{" "}
+          <a href="mailto:maelsiohan01@gmail.com" className="text-primary hover:underline">
+            maelsiohan01@gmail.com
+          </a>
+        </p>
         © {new Date().getFullYear()} CVento
       </footer>
     </main>

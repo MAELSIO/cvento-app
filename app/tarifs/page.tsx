@@ -90,6 +90,14 @@ export default async function TarifsPage() {
           </CheckoutButton>
         </div>
       </div>
+
+      <p className="mt-8 text-center text-sm text-ink-soft">
+        🛡️ Satisfait ou remboursé 14 jours, sans justification —{" "}
+        <a href="/cgu" className="text-primary hover:underline">
+          voir les CGV
+        </a>
+        .
+      </p>
     </main>
   );
 }
