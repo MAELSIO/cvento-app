@@ -49,6 +49,7 @@ export async function POST(request: NextRequest) {
     ...(plan !== "lifetime"
       ? { subscription_data: { metadata: { user_id: user.id } } }
       : { payment_intent_data: { metadata: { user_id: user.id } } }),
+    payment_method_collection: "if_required",
     metadata: { user_id: user.id, plan },
     ...(LAUNCH_PROMO_CODE
       ? { discounts: [{ promotion_code: LAUNCH_PROMO_CODE }] }
