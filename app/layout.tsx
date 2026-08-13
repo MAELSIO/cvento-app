@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Space_Grotesk, Inter } from "next/font/google";
 import { CookieNotice } from "@/components/CookieNotice";
 import "./globals.css";
@@ -34,6 +35,11 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-bg text-ink">
         {children}
         <CookieNotice />
+        <Script
+          data-goatcounter="https://cvento.goatcounter.com/count"
+          src="//gc.zgo.at/count.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
