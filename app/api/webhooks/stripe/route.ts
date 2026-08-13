@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import Stripe from "stripe";
-import { stripe } from "@/lib/stripe";
+import { stripe, itemCurrentPeriodEnd } from "@/lib/stripe";
 import { createServiceClient } from "@/lib/supabase/server";
 
 /**
@@ -35,7 +35,8 @@ export async function POST(request: NextRequest) {
 
   const supabase = createServiceClient();
 
-  switch (event.type) {
+  try {
+    switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
       const userId = session.client_reference_id || session.metadata?.user_id;
@@ -66,9 +67,7 @@ export async function POST(request: NextRequest) {
         stripe_subscription_id: subscription.id,
         status: subscription.status,
         price_id: subscription.items.data[0]?.price.id ?? null,
-        current_period_end: new Date(
-          subscription.items.data[0]?.current_period_end * 1000
-        ).toISOString(),
+        current_period_end: itemCurrentPeriodEnd(subscription),
         updated_at: new Date().toISOString(),
       });
       break;
@@ -81,9 +80,7 @@ export async function POST(request: NextRequest) {
         .update({
           status: subscription.status,
           price_id: subscription.items.data[0]?.price.id ?? null,
-          current_period_end: new Date(
-            subscription.items.data[0]?.current_period_end * 1000
-          ).toISOString(),
+          current_period_end: itemCurrentPeriodEnd(subscription),
           updated_at: new Date().toISOString(),
         })
         .eq("stripe_subscription_id", subscription.id);
@@ -131,6 +128,11 @@ export async function POST(request: NextRequest) {
 
     default:
       break;
+    }
+  } catch (err) {
+    // Ne jamais laisser un bug de traitement renvoyer un 500 : Stripe
+    // retenterait indéfiniment le même événement en échouant à chaque fois.
+    console.error("[webhooks/stripe] échec de traitement", event.type, err);
   }
 
   return NextResponse.json({ received: true });

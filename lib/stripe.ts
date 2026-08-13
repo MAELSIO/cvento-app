@@ -5,6 +5,17 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   typescript: true,
 });
 
+/** Lit la fin de période courante d'un abonnement (fallback si absente au niveau item). */
+export function itemCurrentPeriodEnd(
+  subscription: Stripe.Subscription
+): string {
+  const raw =
+    subscription.items.data[0]?.current_period_end ??
+    (subscription as unknown as { current_period_end?: number })
+      .current_period_end;
+  return new Date((raw ?? Math.floor(Date.now() / 1000)) * 1000).toISOString();
+}
+
 /** IDs des prix Stripe "CVento Pro" — créés dans le Dashboard Stripe (Produits). */
 export const PRICE_MONTHLY = process.env.STRIPE_PRICE_MONTHLY!;
 export const PRICE_ANNUAL = process.env.STRIPE_PRICE_ANNUAL!;
