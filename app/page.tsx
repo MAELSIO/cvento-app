@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { CvPreview } from "@/app/dashboard/cv/[id]/cv-preview";
 import { computeAtsScore } from "@/lib/scoring/ats-score";
 import { AI_FEATURES_ENABLED } from "@/lib/ai/feature-flag";
+import { SocialProof } from "./social-proof";
 import type { CvContent } from "@/lib/types/cv";
 
 /**
@@ -198,6 +199,7 @@ export default async function HomePage() {
           <li>🔒 Données hébergées en Europe, jamais revendues</li>
           <li>🛡️ Résiliation en un clic, sans justification</li>
         </ul>
+        <SocialProof />
         {!AI_FEATURES_ENABLED && (
           <p className="mx-auto mt-3 max-w-md text-xs font-semibold text-gold">
             La rédaction et le ciblage par IA arrivent très bientôt. Le CV, le score
