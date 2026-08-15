@@ -5,6 +5,13 @@ export type BlogPost = {
   excerpt: string;
   date: string; // ISO
   sections: BlogSection[];
+  /**
+   * CTA de fin d'article : "diagnostic" pour les articles qui parlent
+   * d'ameliorer un CV existant (le lecteur a deja un CV, on lui propose
+   * de le noter), "signup" (par defaut) pour les articles qui parlent
+   * de construire un CV depuis zero.
+   */
+  cta?: "diagnostic" | "signup";
 };
 
 /**
@@ -16,6 +23,7 @@ export type BlogPost = {
 export const BLOG_POSTS: BlogPost[] = [
   {
     slug: "cv-format-ats-comment-structurer",
+    cta: "diagnostic",
     title: "CV et logiciels de tri (ATS) : comment structurer son CV pour ne pas être rejeté",
     excerpt:
       "La majorité des grandes entreprises françaises utilisent un logiciel de tri automatique avant qu'un recruteur ne voie votre CV. Voici les règles de structure qui évitent le rejet automatique.",
@@ -77,6 +85,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "verbes-action-cv-francais",
+    cta: "diagnostic",
     title: "15 verbes d'action à utiliser dans son CV (et ceux à éviter)",
     excerpt:
       "Un point clé qui commence par 'Responsable de' se lit passivement. Voici les verbes d'action qui rendent vos expériences concrètes et orientées résultat.",
@@ -165,6 +174,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "erreurs-courantes-cv-a-eviter",
+    cta: "diagnostic",
     title: "10 erreurs courantes sur un CV (et comment les corriger)",
     excerpt:
       "Certaines erreurs reviennent sur la majorité des CV que reçoit un recruteur. En voici 10 parmi les plus fréquentes, avec la correction à apporter.",

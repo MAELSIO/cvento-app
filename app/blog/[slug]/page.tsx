@@ -51,15 +51,31 @@ export default async function BlogPostPage({
       </div>
 
       <div className="mt-10 rounded-[var(--radius-lg)] bg-primary-tint p-6 text-center">
-        <p className="mb-3 font-semibold text-primary-dark">
-          Mettez ces conseils en pratique avec CVento.
-        </p>
-        <a
-          href="/signup"
-          className="inline-block rounded-[var(--radius-sm)] bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-[0_4px_0_var(--primary-dark)]"
-        >
-          Créer mon CV gratuitement
-        </a>
+        {post.cta === "diagnostic" ? (
+          <>
+            <p className="mb-3 font-semibold text-primary-dark">
+              Votre CV actuel applique-t-il déjà ces conseils ?
+            </p>
+            <a
+              href="/diagnostic"
+              className="inline-block rounded-[var(--radius-sm)] bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-[0_4px_0_var(--primary-dark)]"
+            >
+              Diagnostiquer mon CV gratuitement
+            </a>
+          </>
+        ) : (
+          <>
+            <p className="mb-3 font-semibold text-primary-dark">
+              Mettez ces conseils en pratique avec CVento.
+            </p>
+            <a
+              href="/signup"
+              className="inline-block rounded-[var(--radius-sm)] bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-[0_4px_0_var(--primary-dark)]"
+            >
+              Créer mon CV gratuitement
+            </a>
+          </>
+        )}
       </div>
     </main>
   );
