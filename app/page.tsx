@@ -589,6 +589,13 @@ export default async function HomePage() {
             maelsiohan01@gmail.com
           </a>
         </p>
+        <p className="mb-3">
+          Indépendant ou artisan ? Découvrez{" "}
+          <a href="https://www.getfacilo.fr" className="text-primary hover:underline">
+            Facilo
+          </a>
+          , pour gérer vos relances, avis clients, devis et rendez-vous.
+        </p>
         © {new Date().getFullYear()} CVento
       </footer>
     </main>
