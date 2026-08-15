@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BLOG_POSTS } from "@/lib/data/blog-posts";
+import { ChecklistSignup } from "./checklist-signup";
 
 export const metadata: Metadata = {
   title: "Blog — CV, lettre de motivation, entretien | CVento",
@@ -17,6 +18,10 @@ export default function BlogIndexPage() {
       </a>
       <h1 className="text-3xl font-bold">Le blog</h1>
       <p className="mt-2 text-ink-soft">CV, lettre de motivation, entretien : des conseils concrets, sans blabla.</p>
+
+      <div className="mt-6">
+        <ChecklistSignup source="blog-index" />
+      </div>
 
       <div className="mt-8 flex flex-col gap-6">
         {BLOG_POSTS.map((post) => (

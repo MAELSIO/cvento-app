@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BLOG_POSTS, getBlogPost } from "@/lib/data/blog-posts";
+import { ChecklistSignup } from "../checklist-signup";
 
 export function generateStaticParams() {
   return BLOG_POSTS.map((p) => ({ slug: p.slug }));
@@ -76,6 +77,10 @@ export default async function BlogPostPage({
             </a>
           </>
         )}
+      </div>
+
+      <div className="mt-4">
+        <ChecklistSignup source={`blog-article-${post.slug}`} />
       </div>
     </main>
   );
