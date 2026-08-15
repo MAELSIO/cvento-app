@@ -41,6 +41,16 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "CVento",
+  url: "https://www.cvento.fr",
+  logo: "https://www.cvento.fr/og-image.png",
+  founder: { "@type": "Person", name: "Maël Siohan" },
+  sameAs: [],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -58,6 +68,10 @@ export default function RootLayout({
           data-goatcounter="https://cvento.goatcounter.com/count"
           src="//gc.zgo.at/count.js"
           strategy="afterInteractive"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
       </body>
     </html>

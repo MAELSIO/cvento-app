@@ -27,8 +27,23 @@ export default async function BlogPostPage({
   const post = getBlogPost(slug);
   if (!post) notFound();
 
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    author: { "@type": "Person", name: "Maël Siohan" },
+    publisher: { "@type": "Organization", name: "CVento" },
+    mainEntityOfPage: `https://www.cvento.fr/blog/${post.slug}`,
+  };
+
   return (
     <main className="mx-auto max-w-2xl px-6 py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <a href="/blog" className="mb-8 inline-flex items-center gap-2.5 font-display text-lg font-bold">
         <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-white">
           C
