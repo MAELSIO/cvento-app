@@ -16,10 +16,29 @@ const inter = Inter({
   weight: ["400", "500", "600", "700"],
 });
 
+const TITLE = "CVento — Créez un CV qui passe les filtres ATS";
+const DESCRIPTION =
+  "CVento génère votre CV et votre lettre de motivation avec l'IA, adaptés au marché français, optimisés pour les logiciels de recrutement (ATS).";
+
 export const metadata: Metadata = {
-  title: "CVento — Créez un CV qui passe les filtres ATS",
-  description:
-    "CVento génère votre CV et votre lettre de motivation avec l'IA, adaptés au marché français, optimisés pour les logiciels de recrutement (ATS).",
+  metadataBase: new URL("https://www.cvento.fr"),
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "https://www.cvento.fr",
+    siteName: "CVento",
+    locale: "fr_FR",
+    type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
