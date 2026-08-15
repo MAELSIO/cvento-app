@@ -74,7 +74,13 @@ export async function POST(request: NextRequest) {
     }
 
     case "customer.subscription.updated": {
-      const subscription = event.data.object as Stripe.Subscription;
+      // Relit l'etat live chez Stripe plutot que de faire confiance au
+      // payload de l'evenement : Stripe ne garantit pas l'ordre de
+      // livraison, un evenement redelivere en retard pourrait sinon
+      // ecraser un etat plus recent (ex: reactiver un abonnement deja
+      // annule entre-temps).
+      const eventSubscription = event.data.object as Stripe.Subscription;
+      const subscription = await stripe.subscriptions.retrieve(eventSubscription.id);
       await supabase
         .from("subscriptions")
         .update({
@@ -96,22 +102,12 @@ export async function POST(request: NextRequest) {
       break;
     }
 
-    case "invoice.payment_failed": {
-      const invoice = event.data.object as Stripe.Invoice;
-      const subscriptionId =
-        typeof invoice.parent?.subscription_details?.subscription === "string"
-          ? invoice.parent.subscription_details.subscription
-          : null;
-      if (!subscriptionId) break;
-
-      await supabase
-        .from("subscriptions")
-        .update({ status: "past_due", updated_at: new Date().toISOString() })
-        .eq("stripe_subscription_id", subscriptionId);
-      break;
-    }
-
+    case "invoice.payment_failed":
     case "invoice.paid": {
+      // Meme logique que customer.subscription.updated : on relit l'etat
+      // live de l'abonnement chez Stripe plutot que de deduire un statut
+      // ("past_due" / "active") a partir du seul type d'evenement, qui
+      // peut etre obsolete si les evenements arrivent dans le desordre.
       const invoice = event.data.object as Stripe.Invoice;
       const subscriptionId =
         typeof invoice.parent?.subscription_details?.subscription === "string"
@@ -119,9 +115,15 @@ export async function POST(request: NextRequest) {
           : null;
       if (!subscriptionId) break;
 
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId);
       await supabase
         .from("subscriptions")
-        .update({ status: "active", updated_at: new Date().toISOString() })
+        .update({
+          status: subscription.status,
+          price_id: subscription.items.data[0]?.price.id ?? null,
+          current_period_end: itemCurrentPeriodEnd(subscription),
+          updated_at: new Date().toISOString(),
+        })
         .eq("stripe_subscription_id", subscriptionId);
       break;
     }
