@@ -421,6 +421,118 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="border-t border-line bg-surface py-16">
+        <div className="mx-auto max-w-4xl px-6">
+          <h2 className="text-center font-display text-2xl font-bold">
+            CVento face aux générateurs généralistes
+          </h2>
+          <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-ink-soft">
+            Canva, Zety, Novoresume, ChatCV… sont de bons outils, mais pensés d&apos;abord pour le
+            marché anglo-saxon. Voici ce que ça change concrètement.
+          </p>
+          <div className="mt-10 overflow-x-auto">
+            <table className="w-full min-w-[520px] border-collapse overflow-hidden rounded-[var(--radius-lg)] border border-line text-sm">
+              <thead>
+                <tr className="bg-white text-left">
+                  <th className="border-b border-line p-4 font-display font-semibold text-ink-soft">
+                    &nbsp;
+                  </th>
+                  <th className="border-b border-line bg-primary-tint p-4 font-display font-semibold text-primary-dark">
+                    CVento
+                  </th>
+                  <th className="border-b border-line p-4 font-display font-semibold text-ink-soft">
+                    Canva / Zety / Novoresume / ChatCV
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  [
+                    "Lettre de motivation à la française",
+                    "Générée nativement (formule d'appel, 3 paragraphes, formule de politesse)",
+                    "Génération générique, souvent traduite de l'anglais",
+                  ],
+                  [
+                    "Intitulés attendus par les ATS français",
+                    "« Expérience professionnelle », « Formation »…",
+                    "Intitulés anglo-saxons ou traductions approximatives",
+                  ],
+                  [
+                    "Score de compatibilité ciblé sur l'offre",
+                    "Calculé sur une vingtaine de critères, pour le poste visé",
+                    "Rarement disponible, ou générique",
+                  ],
+                  [
+                    "Paiement unique, accès à vie",
+                    "149 € une fois, sans engagement récurrent",
+                    "Généralement abonnement uniquement",
+                  ],
+                  [
+                    "Support client en français",
+                    "Par une vraie personne, réponse rapide",
+                    "Support générique, souvent anglophone",
+                  ],
+                ].map(([label, cvento, autres]) => (
+                  <tr key={label} className="odd:bg-surface">
+                    <td className="border-b border-line p-4 font-medium">{label}</td>
+                    <td className="border-b border-line bg-primary-tint p-4 text-ink-soft">
+                      <span className="mr-1.5 text-primary">✓</span>
+                      {cvento}
+                    </td>
+                    <td className="border-b border-line p-4 text-ink-faint">{autres}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-3 text-center text-xs text-ink-faint">
+            Comparaison basée sur le positionnement général de ces outils — à vérifier sur leurs
+            sites respectifs, qui évoluent régulièrement.
+          </p>
+        </div>
+      </section>
+
+      <section className="border-t border-line py-16">
+        <div className="mx-auto max-w-3xl px-6 text-center">
+          <p className="text-xs font-bold uppercase tracking-wide text-primary">Sans abonnement</p>
+          <h2 className="mt-2 font-display text-2xl font-bold">
+            Ou payez une fois, gardez l&apos;accès à vie
+          </h2>
+          <p className="mx-auto mt-2 max-w-lg text-sm text-ink-soft">
+            En plus du Pro mensuel et annuel, CVento propose un accès à vie à{" "}
+            <strong className="text-ink">149 €, en un seul paiement</strong> — plus jamais de
+            prélèvement à gérer.
+          </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="/tarifs"
+              className="inline-block rounded-[var(--radius-sm)] bg-primary px-6 py-3 text-sm font-bold text-white shadow-[0_4px_0_var(--primary-dark)]"
+            >
+              Voir l&apos;offre à vie →
+            </a>
+          </div>
+          <p className="mt-4 text-xs text-ink-faint">
+            🛡️ Satisfait ou remboursé 14 jours, sans justification, quelle que soit la formule.
+          </p>
+        </div>
+      </section>
+
+      <section className="border-t border-line bg-surface py-16">
+        <div className="mx-auto max-w-2xl px-6 text-center">
+          <h2 className="font-display text-2xl font-bold">Une question, un souci ?</h2>
+          <p className="mx-auto mt-2 max-w-md text-sm text-ink-soft">
+            Pas de bot, pas de ticket qui traîne : vous écrivez directement à la personne qui a
+            construit CVento, et vous avez une réponse rapidement.
+          </p>
+          <a
+            href="mailto:maelsiohan01@gmail.com"
+            className="mt-5 inline-flex items-center gap-2 rounded-[var(--radius-sm)] border-2 border-primary px-5 py-3 text-sm font-bold text-primary hover:bg-primary hover:text-white"
+          >
+            ✉️ maelsiohan01@gmail.com
+          </a>
+        </div>
+      </section>
+
       <section className="border-t border-line py-16">
         <div className="mx-auto max-w-2xl px-6">
           <h2 className="text-center font-display text-2xl font-bold">Questions fréquentes</h2>
