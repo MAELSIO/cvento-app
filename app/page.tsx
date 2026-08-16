@@ -3,6 +3,7 @@ import { CvPreview } from "@/app/dashboard/cv/[id]/cv-preview";
 import { computeAtsScore } from "@/lib/scoring/ats-score";
 import { AI_FEATURES_ENABLED } from "@/lib/ai/feature-flag";
 import { SocialProof } from "./social-proof";
+import { Testimonials } from "./testimonials";
 import type { CvContent } from "@/lib/types/cv";
 
 /**
@@ -185,14 +186,18 @@ export default async function HomePage() {
             Créer mon CV gratuitement
           </a>
           <a
-            href="/tarifs"
+            href="/diagnostic"
             className="rounded-[var(--radius-sm)] border-2 border-line px-6 py-3 text-sm font-bold text-ink hover:border-primary"
           >
-            Voir les tarifs
+            Diagnostiquer mon CV actuel
           </a>
         </div>
         <p className="mt-4 text-xs text-ink-faint">
-          Gratuit pour commencer, sans carte bancaire.
+          Gratuit pour commencer, sans carte bancaire. Déjà un CV ?{" "}
+          <a href="/diagnostic" className="underline hover:text-primary">
+            Testez-le gratuitement
+          </a>{" "}
+          sans créer de compte.
         </p>
         <ul className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold text-ink-soft">
           <li>🇫🇷 Pensé pour le marché français</li>
@@ -207,6 +212,8 @@ export default async function HomePage() {
           </p>
         )}
       </section>
+
+      <Testimonials />
 
       <section className="border-t border-line py-16">
         <div className="mx-auto max-w-4xl px-6">
