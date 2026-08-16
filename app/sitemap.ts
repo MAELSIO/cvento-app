@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/lib/data/blog-posts";
+import { METIERS } from "@/lib/data/metiers";
 
 const BASE_URL = "https://www.cvento.fr";
 
@@ -24,5 +25,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...blogPages];
+  const metierPages: MetadataRoute.Sitemap = METIERS.map((metier) => ({
+    url: `${BASE_URL}/exemples-cv/${metier.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  return [...staticPages, ...blogPages, ...metierPages];
 }
