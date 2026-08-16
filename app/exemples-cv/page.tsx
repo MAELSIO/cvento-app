@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { METIERS } from "@/lib/data/metiers";
+import { MetierSearch } from "./metier-search";
 
 export const metadata: Metadata = {
   title: "Exemples de CV par métier — CVento",
@@ -17,21 +18,30 @@ export default function ExemplesCvIndexPage() {
         CVento
       </a>
       <h1 className="text-3xl font-bold">Exemples de CV par métier</h1>
-      <p className="mt-2 text-ink-soft">
-        Consultez un exemple concret pour votre métier : accroche, points clés d&apos;expérience et
-        compétences à mettre en avant.
+      <p className="mt-3 text-ink-soft">
+        {METIERS.length} exemples de CV rédigés pour coller aux attentes réelles de chaque métier :
+        vocabulaire, chiffres clés et compétences que recruteurs et logiciels de tri (ATS) recherchent
+        en priorité. Trouvez le vôtre pour voir concrètement à quoi ressemble une accroche efficace,
+        des points d&apos;expérience orientés résultats et une liste de compétences pertinente — puis
+        générez le vôtre avec CVento.
       </p>
 
-      <div className="mt-8 grid gap-3 sm:grid-cols-2">
-        {METIERS.map((m) => (
-          <a
-            key={m.slug}
-            href={`/exemples-cv/${m.slug}`}
-            className="rounded-[var(--radius)] border border-line bg-surface px-4 py-3 text-sm font-semibold hover:border-primary"
-          >
-            CV {m.nom}
-          </a>
-        ))}
+      <div className="mt-10">
+        <MetierSearch metiers={METIERS} />
+      </div>
+
+      <div className="mt-16 rounded-[var(--radius-lg)] border border-line bg-surface p-8 text-center">
+        <h2 className="font-display text-xl font-bold">Vous ne trouvez pas votre métier ?</h2>
+        <p className="mx-auto mt-2 max-w-md text-sm text-ink-soft">
+          Pas besoin d&apos;un exemple tout fait : décrivez votre parcours, CVento génère une accroche
+          et des points d&apos;expérience adaptés à votre situation et à l&apos;offre visée.
+        </p>
+        <a
+          href="/signup"
+          className="mt-5 inline-block rounded-[var(--radius-sm)] bg-primary px-6 py-3 text-sm font-bold text-white shadow-[0_4px_0_var(--primary-dark)]"
+        >
+          Créer mon CV gratuitement
+        </a>
       </div>
     </main>
   );
