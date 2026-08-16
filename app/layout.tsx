@@ -69,6 +69,15 @@ export default function RootLayout({
           src="//gc.zgo.at/count.js"
           strategy="afterInteractive"
         />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-421LT5NX2J" strategy="afterInteractive" />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-421LT5NX2J');
+          `}
+        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
