@@ -598,7 +598,7 @@ export default async function HomePage() {
         </p>
         <p className="mb-3">
           Indépendant ou artisan ? Découvrez{" "}
-          <a href="https://www.getfacilo.fr" className="text-primary hover:underline">
+          <a href="https://www.getfacilo.fr?utm_source=cvento&utm_medium=cross-link&utm_campaign=facilo-referral" className="text-primary hover:underline">
             Facilo
           </a>
           , pour gérer vos relances, avis clients, devis et rendez-vous.
