@@ -1,8 +1,8 @@
 export type Testimonial = {
   /** Prénom du client. Ex: "Julie" */
   prenom: string;
-  /** Sa situation. Ex: "Étudiante en marketing", "En reconversion" */
-  role: string;
+  /** Sa situation (optionnel si non communiquée). Ex: "Étudiante en marketing", "En reconversion" */
+  role?: string;
   /** Sa ville (optionnel). Ex: "Lyon" */
   ville?: string;
   /** Le témoignage, mot pour mot si possible. */
@@ -46,4 +46,15 @@ export type Testimonial = {
  * Pour un avis Google : ouvrez votre fiche Google Business Profile > Avis >
  * cliquez sur l'avis > icône de partage > copier le lien.
  */
-export const TESTIMONIALS: Testimonial[] = [];
+export const TESTIMONIALS: Testimonial[] = [
+  {
+    prenom: "Leo",
+    citation: "Une bonne plateforme pour rédiger et faire son CV. Les modèles sont pratiques et le remplissage est rapide et fluide.",
+    dateAjout: "2026-08-16",
+  },
+  {
+    prenom: "Anais Hacque",
+    citation: "Super site de modèle de CV",
+    dateAjout: "2026-08-16",
+  },
+];
