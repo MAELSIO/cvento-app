@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { AI_FEATURES_ENABLED } from "@/lib/ai/feature-flag";
 import { CheckoutButton } from "./checkout-button";
+import { ComparisonTable } from "@/app/comparison-table";
 
 const ctaClass =
   "block w-full rounded-[var(--radius-sm)] bg-primary px-4 py-3 text-center text-sm font-bold text-white shadow-[0_4px_0_var(--primary-dark)]";
@@ -98,6 +99,10 @@ export default async function TarifsPage() {
         </a>
         .
       </p>
+
+      <div className="mt-16 border-t border-line pt-16">
+        <ComparisonTable />
+      </div>
 
       <footer className="mt-16 border-t border-line pt-8 text-center text-xs text-ink-faint">
         <p>
