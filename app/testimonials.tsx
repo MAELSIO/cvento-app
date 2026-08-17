@@ -39,14 +39,21 @@ function reviewSchema(entries: Testimonial[]) {
   };
 }
 
+const GRID_LAYOUT: Record<number, string> = {
+  1: "mx-auto max-w-sm grid gap-6",
+  2: "mx-auto max-w-2xl grid gap-6 sm:grid-cols-2",
+};
+
 export function Testimonials() {
-  if (TESTIMONIALS.length === 0) return null;
+  const count = TESTIMONIALS.length;
+  if (count === 0) return null;
+  const gridClass = GRID_LAYOUT[count] ?? "grid gap-6 sm:grid-cols-2 lg:grid-cols-3";
 
   return (
     <section className="border-t border-line bg-surface py-16">
       <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-center font-display text-2xl font-bold">Ce qu'en disent les utilisateurs</h2>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className={`mt-10 ${gridClass}`}>
           {TESTIMONIALS.map((t) => (
             <div key={t.prenom + t.dateAjout} className="rounded-[var(--radius-lg)] border border-line bg-white p-6">
               <Stars note={t.note} />
