@@ -5,6 +5,7 @@ import { AI_FEATURES_ENABLED } from "@/lib/ai/feature-flag";
 import { SocialProof } from "./social-proof";
 import { Testimonials } from "./testimonials";
 import { ComparisonTable } from "./comparison-table";
+import { ChecklistSignup } from "./blog/checklist-signup";
 import type { CvContent } from "@/lib/types/cv";
 
 /**
@@ -495,6 +496,12 @@ export default async function HomePage() {
               </details>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="border-t border-line py-16">
+        <div className="mx-auto max-w-md px-6">
+          <ChecklistSignup source="homepage" />
         </div>
       </section>
 
