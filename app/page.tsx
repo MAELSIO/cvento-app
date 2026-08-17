@@ -544,7 +544,11 @@ export default async function HomePage() {
           <a href="https://www.getfacilo.fr?utm_source=cvento&utm_medium=cross-link&utm_campaign=facilo-referral" className="text-primary underline">
             Facilo
           </a>
-          , pour gérer vos relances, avis clients, devis et rendez-vous.
+          , pour gérer vos relances, avis clients, devis et rendez-vous — ou, si vous êtes dans le BTP,{" "}
+          <a href="https://relancechantier.fr?utm_source=cvento&utm_medium=cross-link&utm_campaign=rc-referral" className="text-primary underline">
+            Relance Chantier
+          </a>
+          , spécialisé dans la relance des impayés de chantier.
         </p>
         © {new Date().getFullYear()} CVento
       </footer>

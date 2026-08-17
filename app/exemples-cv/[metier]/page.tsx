@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { METIERS, getMetier } from "@/lib/data/metiers";
+import { CrossPromoTip } from "@/components/CrossPromoTip";
 
 export function generateStaticParams() {
   return METIERS.map((m) => ({ metier: m.slug }));
@@ -71,6 +72,14 @@ export default async function MetierPage({
         <h2 className="font-display text-lg font-semibold">Formation type</h2>
         <p className="mt-2 text-sm text-ink-soft">{metier.formation}</p>
       </section>
+
+      {metier.crossPromo && (
+        <CrossPromoTip
+          message={metier.crossPromo.message}
+          href={metier.crossPromo.href}
+          linkLabel={metier.crossPromo.linkLabel}
+        />
+      )}
 
       <div className="mt-8 rounded-[var(--radius-lg)] bg-primary-tint p-6 text-center">
         <p className="mb-3 font-semibold text-primary-dark">

@@ -6,6 +6,16 @@ export type MetierExemple = {
   bullets: string[];
   competences: string[];
   formation: string;
+  /**
+   * Renvoi contextuel vers un autre outil du même créateur (Facilo,
+   * Relance Chantier), seulement quand le métier s'y prête vraiment —
+   * voir components/CrossPromoTip.tsx. Absent pour la plupart des métiers.
+   */
+  crossPromo?: {
+    message: string;
+    href: string;
+    linkLabel: string;
+  };
 };
 
 /**
@@ -194,6 +204,12 @@ export const METIERS: MetierExemple[] = [
     ],
     competences: ["Habilitations électriques B1-B2-BR", "Normes NF C 15-100", "Lecture de plans", "Câblage tertiaire"],
     formation: "CAP/Bac Pro Électricien, habilitations à jour",
+    crossPromo: {
+      message:
+        "Déjà à votre compte comme électricien ? Le vrai casse-tête n'est pas le CV, c'est les factures de chantier qui traînent —",
+      href: "https://relancechantier.fr?utm_source=cvento&utm_medium=cross-link&utm_campaign=exemples-cv-electricien",
+      linkLabel: "Relance Chantier automatise les relances",
+    },
   },
   {
     slug: "cuisinier",
@@ -284,6 +300,12 @@ export const METIERS: MetierExemple[] = [
     ],
     competences: ["Gestion de chantier", "Lecture de plans", "Sécurité BTP", "Négociation fournisseurs", "AutoCAD"],
     formation: "BTS Bâtiment ou école d'ingénieur travaux publics",
+    crossPromo: {
+      message:
+        "Vous pilotez des chantiers pour votre propre structure ? Les impayés clients sont un classique du BTP —",
+      href: "https://relancechantier.fr?utm_source=cvento&utm_medium=cross-link&utm_campaign=exemples-cv-conducteur-de-travaux",
+      linkLabel: "Relance Chantier automatise la relance",
+    },
   },
   {
     slug: "data-analyst",
@@ -599,6 +621,11 @@ export const METIERS: MetierExemple[] = [
     ],
     competences: ["Menuiserie bois/PVC/alu", "Lecture de plans", "Pose de menuiseries", "Agencement sur-mesure", "Habilitation travail en hauteur"],
     formation: "CAP/Bac Pro Menuisier",
+    crossPromo: {
+      message: "Menuisier à votre compte ? Ne perdez pas de temps à courir après vos factures impayées —",
+      href: "https://relancechantier.fr?utm_source=cvento&utm_medium=cross-link&utm_campaign=exemples-cv-menuisier",
+      linkLabel: "Relance Chantier automatise la relance",
+    },
   },
 ];
 
