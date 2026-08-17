@@ -64,20 +64,13 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-bg text-ink">
         {children}
         <CookieNotice />
+        {/* GoatCounter : cookieless, exempté de consentement CNIL, reste actif. */}
         <Script
           data-goatcounter="https://cvento.goatcounter.com/count"
           src="//gc.zgo.at/count.js"
           strategy="afterInteractive"
         />
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-421LT5NX2J" strategy="afterInteractive" />
-        <Script id="ga4-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-421LT5NX2J');
-          `}
-        </Script>
+        {/* Google Analytics 4 : chargé uniquement après consentement, voir components/CookieNotice.tsx */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
