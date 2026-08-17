@@ -58,7 +58,7 @@ export function ComparisonTable({ compact = false }: { compact?: boolean }) {
           <tbody>
             {ROWS.map(([label, cvento, autres]) => (
               <tr key={label} className="odd:bg-surface">
-                <td className="border-b border-line p-4 font-medium">{label}</td>
+                <th scope="row" className="border-b border-line p-4 text-left font-medium">{label}</th>
                 <td className="border-b border-line bg-primary-tint p-4 text-ink-soft">
                   <span className="mr-1.5 text-primary">✓</span>
                   {cvento}

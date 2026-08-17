@@ -64,6 +64,7 @@ export function Testimonials() {
                   <img
                     src={t.photo}
                     alt={`Photo de ${t.prenom}`}
+                    loading="lazy"
                     className="h-9 w-9 rounded-full object-cover"
                   />
                 ) : null}

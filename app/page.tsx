@@ -535,13 +535,13 @@ export default async function HomePage() {
         </nav>
         <p className="mb-3">
           Une question ?{" "}
-          <a href="mailto:maelsiohan01@gmail.com" className="text-primary hover:underline">
+          <a href="mailto:maelsiohan01@gmail.com" className="text-primary underline">
             maelsiohan01@gmail.com
           </a>
         </p>
         <p className="mb-3">
           Indépendant ou artisan ? Découvrez{" "}
-          <a href="https://www.getfacilo.fr?utm_source=cvento&utm_medium=cross-link&utm_campaign=facilo-referral" className="text-primary hover:underline">
+          <a href="https://www.getfacilo.fr?utm_source=cvento&utm_medium=cross-link&utm_campaign=facilo-referral" className="text-primary underline">
             Facilo
           </a>
           , pour gérer vos relances, avis clients, devis et rendez-vous.
