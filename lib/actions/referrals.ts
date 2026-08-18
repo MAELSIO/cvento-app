@@ -33,26 +33,15 @@ export async function getOrCreateReferralCode(): Promise<string> {
   throw new Error("Impossible de générer un code de parrainage.");
 }
 
-export async function getReferralStats() {
+/** Nombre de filleuls inscrits via `code` (le code du parrain, déjà connu de l'appelant). */
+export async function getReferralStats(code: string) {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-
-  const { data: referral } = await supabase
-    .from("referrals")
-    .select("code")
-    .eq("user_id", user.id)
-    .single();
-  if (!referral) return { code: null, count: 0 };
-
   const { count } = await supabase
     .from("referral_redemptions")
     .select("id", { count: "exact", head: true })
-    .eq("code", referral.code);
+    .eq("code", code);
 
-  return { code: referral.code, count: count ?? 0 };
+  return { count: count ?? 0 };
 }
 
 /**
@@ -68,14 +57,18 @@ export async function redeemReferral(code: string) {
   } = await supabase.auth.getUser();
   if (!user || !code) return;
 
-  const { data: referral } = await supabase
+  // service_role requis : le filleul cherche le code d'un AUTRE utilisateur
+  // (le parrain), or la policy RLS de `referrals` ne permet de lire que sa
+  // propre ligne (auth.uid() = user_id) — un client RLS-scopé ne trouverait
+  // donc jamais le code d'autrui.
+  const service = createServiceClient();
+
+  const { data: referral } = await service
     .from("referrals")
     .select("user_id")
     .eq("code", code)
     .single();
   if (!referral || referral.user_id === user.id) return;
-
-  const service = createServiceClient();
 
   const { error } = await service
     .from("referral_redemptions")

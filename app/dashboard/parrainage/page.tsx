@@ -3,8 +3,8 @@ import { AI_FEATURES_ENABLED } from "@/lib/ai/feature-flag";
 import { ReferralLink } from "./referral-link";
 
 export default async function ParrainagePage() {
-  await getOrCreateReferralCode();
-  const { code, count } = await getReferralStats();
+  const code = await getOrCreateReferralCode();
+  const { count } = await getReferralStats(code);
 
   return (
     <div className="mx-auto max-w-xl">
