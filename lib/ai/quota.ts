@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { FREE_PLAN_AI_QUOTA_PER_DAY } from "@/lib/plan";
+import { createServiceClient } from "@/lib/supabase/server";
 
 export type AiUsageKind = "bullet" | "keywords" | "score" | "cover_letter" | "interview";
 
@@ -33,6 +34,13 @@ export async function assertAiQuota(
   }
 }
 
-export async function logAiUsage(supabase: SupabaseClient, userId: string, kind: AiUsageKind) {
-  await supabase.from("ai_usage").insert({ user_id: userId, kind });
+/**
+ * Écrit toujours via service_role : la policy RLS de `ai_usage` n'autorise
+ * que la lecture (SELECT) pour l'utilisateur authentifié, un insert avec le
+ * client RLS-scopé échoue silencieusement et laisse le quota inopérant.
+ */
+export async function logAiUsage(userId: string, kind: AiUsageKind) {
+  const service = createServiceClient();
+  const { error } = await service.from("ai_usage").insert({ user_id: userId, kind });
+  if (error) throw new Error(`Échec de journalisation du quota IA: ${error.message}`);
 }

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { resend, CVENTO_FROM_EMAIL } from "@/lib/resend";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -10,6 +11,10 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
  * l'instant, le volume ne le justifie pas encore.
  */
 export async function POST(request: NextRequest) {
+  if (!checkRateLimit(`checklist:${getClientIp(request)}`, 5, 60 * 60 * 1000)) {
+    return NextResponse.json({ error: "Trop de demandes, réessayez plus tard." }, { status: 429 });
+  }
+
   const body = await request.json().catch(() => ({}));
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
   const source = typeof body.source === "string" ? body.source : "blog";

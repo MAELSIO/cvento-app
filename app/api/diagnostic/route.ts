@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { computeTextScore } from "@/lib/scoring/text-score";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -9,6 +10,10 @@ export const runtime = "nodejs";
  * cahier des charges, section "fonctions pensées pour la croissance".
  */
 export async function POST(request: NextRequest) {
+  if (!checkRateLimit(`diagnostic:${getClientIp(request)}`, 10, 60 * 60 * 1000)) {
+    return NextResponse.json({ error: "Trop de demandes, réessayez plus tard." }, { status: 429 });
+  }
+
   const formData = await request.formData();
   const file = formData.get("file");
 

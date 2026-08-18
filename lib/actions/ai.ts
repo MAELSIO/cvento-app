@@ -65,7 +65,7 @@ export async function generateBullets(input: {
         "Réponds UNIQUEMENT avec un tableau JSON de 3 à 5 chaînes de caractères, sans aucun texte autour.",
       `Poste : ${input.poste}\nEntreprise : ${input.entreprise}\nMots-clés à intégrer si pertinent : ${input.motsCles || "aucun"}`
     );
-    await logAiUsage(ctx.supabase, ctx.user.id, "bullet");
+    await logAiUsage(ctx.user.id, "bullet");
     return { data: bullets };
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Erreur lors de la génération IA." };
@@ -91,7 +91,7 @@ export async function extractKeywords(jobDescription: string): Promise<AiResult<
         "Réponds UNIQUEMENT avec un tableau JSON de 8 à 15 mots-clés courts (1 à 3 mots chacun), sans texte autour.",
       jobDescription
     );
-    await logAiUsage(ctx.supabase, ctx.user.id, "keywords");
+    await logAiUsage(ctx.user.id, "keywords");
     return { data: keywords };
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Erreur lors de l'analyse des mots-clés." };
@@ -123,7 +123,7 @@ export async function generateCoverLetter(input: {
         `Offre d'emploi : ${input.targetJobDescription || "non fournie"}\n\n` +
         `Profil du candidat (extrait du CV) :\n${input.cvSummaryText}`
     );
-    await logAiUsage(ctx.supabase, ctx.user.id, "cover_letter");
+    await logAiUsage(ctx.user.id, "cover_letter");
     return { data: letter };
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Erreur lors de la génération IA." };
@@ -146,7 +146,7 @@ export async function generateInterviewQuestions(input: {
         "Réponds UNIQUEMENT avec un tableau JSON de 6 à 8 questions en français, sans texte autour.",
       `Poste visé : ${input.targetJobTitle}\nOffre : ${input.targetJobDescription || "non fournie"}`
     );
-    await logAiUsage(ctx.supabase, ctx.user.id, "interview");
+    await logAiUsage(ctx.user.id, "interview");
     return { data: questions };
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Erreur lors de la génération des questions." };
@@ -170,7 +170,7 @@ export async function getInterviewFeedback(input: {
         "Réponds uniquement avec le texte du retour, sans titre.",
       `Question : ${input.question}\nRéponse du candidat : ${input.answer}`
     );
-    await logAiUsage(ctx.supabase, ctx.user.id, "interview");
+    await logAiUsage(ctx.user.id, "interview");
     return { data: feedback };
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Erreur lors de l'analyse de la réponse." };

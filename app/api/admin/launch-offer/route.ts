@@ -1,5 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
+import { safeCompare } from "@/lib/safe-compare";
+
+function isValidAdminKey(request: NextRequest): boolean {
+  const provided = request.headers.get("x-admin-key");
+  const expected = process.env.ADMIN_KEY;
+  return Boolean(provided && expected && safeCompare(provided, expected));
+}
 
 /**
  * Active/désactive l'offre de lancement (bannière + STRIPE_LAUNCH_PROMO_CODE
@@ -13,7 +20,7 @@ import { createServiceClient } from "@/lib/supabase/server";
  *     -d '{"active": true, "message": "Offre de lancement : -50% ce mois-ci"}'
  */
 export async function POST(request: NextRequest) {
-  if (request.headers.get("x-admin-key") !== process.env.ADMIN_KEY) {
+  if (!isValidAdminKey(request)) {
     return NextResponse.json({ error: "Clé admin invalide." }, { status: 403 });
   }
 
@@ -32,7 +39,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  if (request.headers.get("x-admin-key") !== process.env.ADMIN_KEY) {
+  if (!isValidAdminKey(request)) {
     return NextResponse.json({ error: "Clé admin invalide." }, { status: 403 });
   }
   const supabase = createServiceClient();
