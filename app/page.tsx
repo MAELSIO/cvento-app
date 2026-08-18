@@ -147,22 +147,23 @@ export default async function HomePage() {
           {offer.message}
         </div>
       )}
-      <header className="mx-auto flex max-w-5xl items-center justify-between px-6 py-6">
-        <a href="/" className="flex items-center gap-2.5 font-display text-lg font-bold">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-white">
+      <header className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6 sm:py-6">
+        <a href="/" className="flex shrink-0 items-center gap-2 font-display text-base font-bold sm:gap-2.5 sm:text-lg">
+          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-sm font-bold text-white sm:h-8 sm:w-8">
             C
           </span>
           CVento
         </a>
-        <nav className="flex items-center gap-4 text-sm font-semibold text-ink-soft">
-          <a href="/diagnostic" className="hover:text-primary">Diagnostic gratuit</a>
-          <a href="/tarifs" className="hover:text-primary">Tarifs</a>
+        <nav className="flex items-center gap-2 text-sm font-semibold text-ink-soft sm:gap-4">
+          <a href="/diagnostic" className="hidden hover:text-primary sm:inline-block">Diagnostic gratuit</a>
+          <a href="/tarifs" className="hidden hover:text-primary sm:inline-block">Tarifs</a>
           <a href="/login" className="hover:text-primary">Connexion</a>
           <a
             href="/signup"
-            className="rounded-[var(--radius-sm)] bg-primary px-4 py-2 text-white shadow-[0_4px_0_var(--primary-dark)]"
+            className="rounded-[var(--radius-sm)] bg-primary px-3 py-2 text-xs text-white shadow-[0_4px_0_var(--primary-dark)] sm:px-4 sm:text-sm"
           >
-            Créer mon CV gratuitement
+            <span className="sm:hidden">Créer mon CV</span>
+            <span className="hidden sm:inline">Créer mon CV gratuitement</span>
           </a>
         </nav>
       </header>
